@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import com.dabdm.travelplan.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -40,7 +41,7 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 
 /**
- * Test activity for the Google Map API V2
+ * Activity showing the map with the calculated itinerary
  * TODO Calculations should be done in another Class
  */
 public class MapActivity extends Activity {
@@ -58,13 +59,11 @@ public class MapActivity extends Activity {
 	mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
 	// Add a marker
-	final LatLng MELBOURNE = new LatLng(-37.81319, 144.96298);
-	Marker melbourne = mMap.addMarker(new MarkerOptions().position(MELBOURNE).title("Melbourne").snippet("Population: 4,137,400")
-		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+	Marker melbournMarker = addMarker(new LatLng(-37.81319, 144.96298), "Melbourne", "Population: 4,137,400", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
 	// Add a polyline
-	Polyline line = mMap.addPolyline(new PolylineOptions().add(new LatLng(-37.81319, 144.96298), new LatLng(-31.95285, 115.85734))
-		.width(15).color(Color.BLUE));
+	Polyline line = addPolyline(new PolylineOptions().add(new LatLng(-37.81319, 144.96298), new LatLng(-31.95285, 115.85734)), 5, Color.BLACK);
+	
 
 	// Get sharedPreferences file
 	SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_FILE_NAME, MODE_PRIVATE);
@@ -73,11 +72,13 @@ public class MapActivity extends Activity {
 	    // Load routes from internet
 	    new LoadDirections().execute();
 	} else {
-	    PolylineOptions polylineOptions = decodePoly(encodedPolyline);
-	    Polyline line2 = mMap.addPolyline(polylineOptions.width(5).color(Color.BLUE));
+	   Polyline line2 = addEncodedPolyline(encodedPolyline, 5, Color.BLUE);
 	}
     }
 
+    /**
+     * Instantiate the map only if it does not already exist
+     */
     private void setUpMapIfNeeded() {
 	// Do a null check to confirm that we have not already instantiated the map.
 	if (mMap == null) {
@@ -88,6 +89,41 @@ public class MapActivity extends Activity {
 
 	    }
 	}
+    }
+    
+    /**
+     * Used to add a marker to the map
+     * @param latLng the LatLng object for the coordinates of the marker to add
+     * @param title String displayed on top of the bubble displayed when the marker is clicked
+     * @param snippet String displayed as the message in the bubble
+     * @param icon BitmapDescriptor the marker icon
+     * @return the new Marker added to the map
+     */
+    public Marker addMarker(LatLng latLng, String title, String snippet, BitmapDescriptor icon) {
+	return mMap.addMarker(new MarkerOptions().position(latLng).title(title).snippet(snippet).icon(icon));
+    }
+    
+    /**
+     * Used to trace a polyline on the map
+     * @param polylineOpt the PolylineOptions containing all the polyline points
+     * @param width the int for the line width
+     * @param color the int representing the line color
+     * @return the new Polyline added to the map
+     */
+    public Polyline addPolyline(PolylineOptions polylineOpt, int width, int color) {
+	return mMap.addPolyline(polylineOpt.width(width).color(color));
+    }
+    
+    /**
+     * Used to trace an encoded polyline
+     * @param encodedPolyline the String containing the encoded points for the polyline to trace
+     * @param width the int for the line width
+     * @param color the int representing the line color
+     * @return the new Polyline added to the map
+     * @see addPolyline
+     */
+    public Polyline addEncodedPolyline(String encodedPolyline, int width, int color) {
+	return mMap.addPolyline(OverviewPolyline.decodePoly(encodedPolyline).width(width).color(color));
     }
 
     /**
@@ -179,46 +215,8 @@ public class MapActivity extends Activity {
 		// Commit
 		sharedPreferencesEditor.commit();
 
-		PolylineOptions polylineOptions = decodePoly(directions.getRoutes().get(0).getOverview_polyline().getPoints());
-		Polyline line = mMap.addPolyline(polylineOptions.width(5).color(Color.BLUE));
+		Polyline line = addEncodedPolyline(directions.getRoutes().get(0).getOverview_polyline().getPoints(), 5, Color.BLUE);
 	    }
 	}
     }
-
-    private PolylineOptions decodePoly(String encoded) {
-
-	PolylineOptions poly = new PolylineOptions();
-	int len = encoded.length();
-	int index = 0;
-	long lat = 0;
-	long lng = 0;
-
-	while (index < len) {
-	    int b;
-	    int shift = 0;
-	    int result = 0;
-	    do {
-		b = encoded.charAt(index++) - 63;
-		result |= (b & 0x1f) << shift;
-		shift += 5;
-	    } while (b >= 0x20);
-	    long dlat = (((result & 1) != 0) ? ~(result >> 1) : (result >> 1));
-	    lat += dlat;
-
-	    shift = 0;
-	    result = 0;
-	    do {
-		b = encoded.charAt(index++) - 63;
-		result |= (b & 0x1f) << shift;
-		shift += 5;
-	    } while (b >= 0x20);
-	    long dlng = (((result & 1) != 0) ? ~(result >> 1) : (result >> 1));
-	    lng += dlng;
-	    LatLng nextPoint = new LatLng(lat * 0.00001, lng * 0.00001); // Convert the lat and lng to microdegrees.
-	    poly.add(nextPoint);
-	}
-
-	return poly;
-    }
-
 }
