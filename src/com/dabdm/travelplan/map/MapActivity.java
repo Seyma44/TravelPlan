@@ -20,6 +20,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.dabdm.places.Place;
 import com.dabdm.travelplan.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -89,6 +90,23 @@ public class MapActivity extends Activity {
 
 	    }
 	}
+    }
+    
+    /**
+     * Used to add a marker to point out a specific place
+     * @param place the Place object to mark
+     * @return the new Marker
+     */
+    public Marker addPlaceMarker(Place place) {
+	// TODO get real coordinate
+	double lat = 0.0;
+	double lng = 0.0;
+	LatLng latLng = new LatLng(lat, lng);
+	String title = place.getName();
+	String snippet = place.getSnippet();
+	// TODO get real icon from the icon url
+	BitmapDescriptor icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+	return addMarker(latLng, title, snippet, icon);
     }
     
     /**

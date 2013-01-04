@@ -15,6 +15,14 @@ public class Place {
     private String reference;
     private String[] types;
     
+    /**
+     * @return a description message for that place
+     */
+    public String getSnippet() {
+	// TODO build what should really be displayed in the marker bubble on the map
+	return "test description for " + getName();
+    }
+    
     public String getFormatted_address() {
         return formatted_address;
     }
