@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
  * Used to get a Java object from the JSON response
  */
 public class OverviewPolyline {
+    
     private String points;
 
     public String getPoints() {
