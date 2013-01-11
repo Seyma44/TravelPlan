@@ -20,10 +20,18 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+
 import com.dabdm.places.Place;
 import com.dabdm.travelplan.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -34,18 +42,11 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.app.Activity;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
-
 /**
  * Activity showing the map with the calculated itinerary
  * TODO Calculations should be done in another Class
  */
-public class MapActivity extends Activity {
+public class MapActivity extends FragmentActivity {
 
     public static final String SHARED_PREF_FILE_NAME  = "prefFile";
     public static final String SHARED_PREF_ROUTES_KEY = "polyline";
@@ -65,6 +66,8 @@ public class MapActivity extends Activity {
 	// Add a polyline
 	Polyline line = addPolyline(new PolylineOptions().add(new LatLng(-37.81319, 144.96298), new LatLng(-31.95285, 115.85734)), 5, Color.BLACK);
 	
+	// Move the camera to the right place
+	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(39.470239, -0.376805), 15));
 
 	// Get sharedPreferences file
 	SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_FILE_NAME, MODE_PRIVATE);
@@ -83,7 +86,7 @@ public class MapActivity extends Activity {
     private void setUpMapIfNeeded() {
 	// Do a null check to confirm that we have not already instantiated the map.
 	if (mMap == null) {
-	    mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+	    mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 	    // Check if we were successful in obtaining the map.
 	    if (mMap != null) {
 		// The Map is verified. It is now safe to manipulate the map.
