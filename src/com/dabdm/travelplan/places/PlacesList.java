@@ -1,4 +1,4 @@
-package com.dabdm.places;
+package com.dabdm.travelplan.places;
 
 /**
  * Class for handling the response from a places search

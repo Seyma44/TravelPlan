@@ -1,4 +1,4 @@
-package com.dabdm.places;
+package com.dabdm.travelplan.places;
 
 /**
  * Represent a place from the Google Places API

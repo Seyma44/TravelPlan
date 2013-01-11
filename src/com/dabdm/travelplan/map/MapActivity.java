@@ -27,8 +27,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.dabdm.places.Place;
 import com.dabdm.travelplan.R;
+import com.dabdm.travelplan.places.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -216,7 +216,7 @@ public class MapActivity extends FragmentActivity {
 	    if (result) {
 		if (responseString.equals("null")) { return; }
 
-		// Convert from JSON to HighScoreList object
+		// Convert from JSON to Direction object
 		GsonBuilder builder = new GsonBuilder();
 		Gson gson = builder.create();
 		JSONObject json = null;
@@ -228,7 +228,7 @@ public class MapActivity extends FragmentActivity {
 		}
 		Directions directions = gson.fromJson(json.toString(), Directions.class);
 
-		// Save the String TODO save it in a datebase
+		// Save the String TODO save it in a database
 		// Get sharedPreferences file
 		SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_FILE_NAME, MODE_PRIVATE);
 		Editor sharedPreferencesEditor = sharedPreferences.edit();
