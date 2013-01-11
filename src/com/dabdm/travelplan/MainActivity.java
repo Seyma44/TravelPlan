@@ -1,6 +1,7 @@
 package com.dabdm.travelplan;
 
 import com.dabdm.travelplan.map.MapActivity;
+import com.dabdm.travelplan.places.PlacesListActivity;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -19,7 +20,8 @@ public class MainActivity extends Activity {
 	buttonNext.setOnClickListener(new View.OnClickListener() {
 	    public void onClick(View v) {
 		// on click, start the Map activity
-		startActivity(new Intent(MainActivity.this, MapActivity.class));
+		//startActivity(new Intent(MainActivity.this, MapActivity.class));
+		startActivity(new Intent(MainActivity.this, PlacesListActivity.class));
 	    }
 	});
     }

@@ -45,6 +45,11 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAPQir6FSqivbCnMxzdLAX4BTdVzlUk9uo" />
+
+        <activity
+            android:name="com.dabdm.travelplan.places.PlacesListActivity"
+            android:label="@string/title_activity_places_list" >
+        </activity>
     </application>
 
 </manifest>
