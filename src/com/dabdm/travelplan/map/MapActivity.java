@@ -28,7 +28,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.dabdm.travelplan.R;
+import com.dabdm.travelplan.Travel;
 import com.dabdm.travelplan.places.Place;
+import com.dabdm.travelplan.places.PlacesList;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -51,12 +53,20 @@ public class MapActivity extends FragmentActivity {
     public static final String SHARED_PREF_FILE_NAME  = "prefFile";
     public static final String SHARED_PREF_ROUTES_KEY = "polyline";
     private GoogleMap	  mMap;
+    private Travel travel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_map);
 	setUpMapIfNeeded();
+	
+	
+	// TODO get the travel from the file
+	travel = new Travel();
+	
+	
+	
 	// Sets the map type to be "hybrid"
 	mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
