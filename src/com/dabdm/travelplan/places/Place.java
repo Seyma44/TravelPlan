@@ -14,6 +14,7 @@ public class Place {
     private float rating;
     private String reference;
     private String[] types;
+    private PlaceDetails details;
     
     /**
      * @return a description message for that place

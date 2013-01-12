@@ -60,59 +60,16 @@ public class PlacesListActivity extends Activity {
      * AsyncTask used to loaded a list of interesting places
      */
     private class LoadPlaces extends AsyncTask<String, Integer, Boolean> {
-	private static final int    CONNECTION_TIMEOUT = 10000;
-	private static final String BASE_URL	   = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyAJM4LHfOwEMJCd1rMp60pFrYjc8gPm5jg&";
 	private String	      responseString     = "";
 
 	@Override
 	protected Boolean doInBackground(String... params) {
-	    HttpResponse response = null;
-
-	    BasicHttpParams httpParams = new BasicHttpParams();
-	    HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
-	    HttpConnectionParams.setSoTimeout(httpParams, CONNECTION_TIMEOUT);
-
-	    HttpClient client = new DefaultHttpClient();
-
-	    List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-	    pairs.add(new BasicNameValuePair("location", "39.470239,-0.376805"));
-	    pairs.add(new BasicNameValuePair("radius", "10000")); // in meters
-	    pairs.add(new BasicNameValuePair("sensor", "true"));
-	  //  pairs.add(new BasicNameValuePair("types", "point_of_interest|museum"));
-	    HttpGet request = new HttpGet(BASE_URL + URLEncodedUtils.format(pairs, "utf-8"));
-	    request.setHeader("Accept", "application/json");
-	    request.setParams(httpParams);
-	    try {
-		response = client.execute(request);
-	    } catch (ClientProtocolException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		return false;
-	    } catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		return false;
-	    } catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		return false;
-	    }
-	    HttpEntity entity = response.getEntity();
-	    if (entity != null) {
-		try {
-		    responseString = EntityUtils.toString(entity);
-		    return true;
-		} catch (ParseException e1) {
-		    // TODO Auto-generated catch block
-		    e1.printStackTrace();
-		    return false;
-		} catch (IOException e1) {
-		    // TODO Auto-generated catch block
-		    e1.printStackTrace();
-		    return false;
-		}
-	    }
-	    return false;
+		GoogleRequests request = new GoogleRequests();
+		double x = -33.8670522;
+		double y =  151.1957362;
+		//responseString = request.getPlaces(x, y, 2000);
+		responseString = request.getPlaceDetails("CmRYAAAAciqGsTRX1mXRvuXSH2ErwW-jCINE1aLiwP64MCWDN5vkXvXoQGPKldMfmdGyqWSpm7BEYCgDm-iv7Kc2PF7QA7brMAwBbAcqMr5i1f4PwTpaovIZjysCEZTry8Ez30wpEhCNCXpynextCld2EBsDkRKsGhSLayuRyFsex6JA6NPh9dyupoTH3g");
+		return responseString==null ? false : true;
 	}
 
 	@Override
@@ -131,12 +88,15 @@ public class PlacesListActivity extends Activity {
 		    // TODO Auto-generated catch block
 		    e.printStackTrace();
 		}
-		PlacesList places = gson.fromJson(json.toString(), PlacesList.class);
-
+		/*PlacesList places = gson.fromJson(json.toString(), PlacesList.class);
+		Log.i("lol",responseString);
 		//Log.i("test", json.toString());
 		for(int i = 0; i < places.getResults().length; i++) {
 		    Log.i("test", places.getResults()[i].getName());
-		}
+		    }
+		*/
+		PlaceDetailsResponse details = gson.fromJson(json.toString(), PlaceDetailsResponse.class);
+		Log.i("tes", String.valueOf(details.result.opening_hours.periods[0].close.day));
 	    }
 	}
     }
