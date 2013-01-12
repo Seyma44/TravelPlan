@@ -28,8 +28,7 @@ public class MainActivity extends Activity {
 		buttonNext.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// on click, start the Map activity
-				// startActivity(new Intent(MainActivity.this,
-				// MapActivity.class));
+				// startActivity(new Intent(MainActivity.this, MapActivity.class));
 				// startActivity(new Intent(MainActivity.this,
 				// PlacesListActivity.class));
 			}
