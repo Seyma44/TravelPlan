@@ -52,6 +52,8 @@ public class MapActivity extends FragmentActivity {
 
     public static final String SHARED_PREF_FILE_NAME  = "prefFile";
     public static final String SHARED_PREF_ROUTES_KEY = "polyline";
+    private int POLYLINE_WIDTH = 5;
+    private int POLYLINE_COLOR = Color.BLUE;
     private GoogleMap	  mMap;
     private Travel travel;
 
@@ -64,8 +66,10 @@ public class MapActivity extends FragmentActivity {
 	
 	// TODO get the travel from the file
 	travel = new Travel();
-	
-	
+	// Display a marker for each Place
+	addTravelMarkers();
+	// Display the itinerary
+	displayItineraries();
 	
 	// Sets the map type to be "hybrid"
 	mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
@@ -102,6 +106,17 @@ public class MapActivity extends FragmentActivity {
 		// The Map is verified. It is now safe to manipulate the map.
 
 	    }
+	}
+    }
+    
+    /**
+     * Used to add a Marker for each Place in the Travel
+     */
+    public void addTravelMarkers() {
+	ArrayList<Place> places = travel.getPlaces();
+	int placesLength = places.size();
+	for(int i = 0; i < placesLength; i++) {
+	    addPlaceMarker(places.get(i));
 	}
     }
     
@@ -155,6 +170,23 @@ public class MapActivity extends FragmentActivity {
      */
     public Polyline addEncodedPolyline(String encodedPolyline, int width, int color) {
 	return mMap.addPolyline(OverviewPolyline.decodePoly(encodedPolyline).width(width).color(color));
+    }
+
+    /**
+     * Calculate and display the itinerary for each day
+     */
+    private void displayItineraries() {
+	ArrayList<String> itineraries = travel.getItineraries();
+	int itineraryNumber = itineraries.size();
+	// If the itineraries have already been calculated
+	if(itineraryNumber == 1) {
+	    // For 1 day, juste display the itinerary
+	    addEncodedPolyline(itineraries.get(0), POLYLINE_WIDTH, POLYLINE_WIDTH);
+	} else if(itineraryNumber > 1) {
+	    // TODO display for the different day
+	} else { // If the itineraries have not been calculated yet
+	    
+	}
     }
 
     /**
