@@ -1,18 +1,6 @@
 package com.dabdm.travelplan;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import com.dabdm.travelplan.map.MapActivity;
-import com.dabdm.travelplan.places.PlacesListActivity;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.dabdm.travelplan.places.Place;
-import com.dabdm.travelplan.places.PlacesListActivity;
+import com.dabdm.travelplan.places.ShowDetails;
 
 public class MainActivity extends Activity {
 

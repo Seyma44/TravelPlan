@@ -26,11 +26,12 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.dabdm.travelplan.R;
 import com.dabdm.travelplan.Travel;
 import com.dabdm.travelplan.places.Place;
-import com.dabdm.travelplan.places.PlacesList;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -56,6 +57,10 @@ public class MapActivity extends FragmentActivity {
     private int POLYLINE_COLOR = Color.BLUE;
     private GoogleMap	  mMap;
     private Travel travel;
+    private Polyline currentItinerary = null;
+    private int itineraryIndex = 0;
+    private MenuItem	 menuItem0     = null;
+    private MenuItem	 menuItem1     = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +89,43 @@ public class MapActivity extends FragmentActivity {
 	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(39.470239, -0.376805), 15));
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+	getMenuInflater().inflate(R.menu.activity_map, menu);
+	menuItem0 = menu.getItem(0);
+	menuItem1 = menu.getItem(1);
+	return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	int itemId = item.getItemId();
+	currentItinerary.remove();
+	itineraryIndex += (itemId == 0)?(-1):1;
+	displayItineraries();
+	return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+	// Do not show the previous button if you are showing the first day
+	if(itineraryIndex == 0) {
+	    menu.getItem(0).setEnabled(false).setVisible(false);
+	} else {
+	    menu.getItem(0).setEnabled(true).setVisible(true);
+	}
+	// Do not show the next button if you are showing the last day
+	if(itineraryIndex == (travel.getDuration() - 1)) {
+	    menu.getItem(travel.getDuration() - 1).setEnabled(false).setVisible(false);
+	} else {
+	    menu.getItem(travel.getDuration() - 1).setEnabled(true).setVisible(true);
+	}
+	
+	return super.onPrepareOptionsMenu(menu);
+    }
+
+
 
     /**
      * Instantiate the map only if it does not already exist
@@ -173,9 +215,10 @@ public class MapActivity extends FragmentActivity {
 	// If the itineraries have already been calculated
 	if(itineraryNumber == 1) {
 	    // For 1 day, just display the itinerary
-	    addEncodedPolyline(itineraries.get(0), POLYLINE_WIDTH, POLYLINE_WIDTH);
+	    currentItinerary = addEncodedPolyline(itineraries.get(0), POLYLINE_WIDTH, POLYLINE_COLOR);
 	} else if(itineraryNumber > 1) {
-	    // TODO display for the different day
+	    // TODO display for the different days
+	    currentItinerary = addEncodedPolyline(itineraries.get(itineraryIndex), POLYLINE_WIDTH, POLYLINE_COLOR);
 	} else { // If the itineraries have not been calculated yet
 	    // Load itineraries from Internet
 	    new LoadDirections().execute();
