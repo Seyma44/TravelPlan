@@ -1,6 +1,10 @@
 package com.dabdm.travelplan.places;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +22,8 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 public class GoogleRequests {
@@ -25,7 +31,7 @@ public class GoogleRequests {
 	private static final String KEY = "AIzaSyANFlZRQPupu3KWGqF8vAU2JvaTIom8ofM";
 	private static final String BASE_URL_PLACES	   = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=" + KEY + "&";
 	private static final String BASE_URL_DETAILS	   = "https://maps.googleapis.com/maps/api/place/details/json?key=" + KEY + "&";
-
+	private static final String BASE_URL_PICTURE	 = "https://maps.googleapis.com/maps/api/place/photo?key=" + KEY + "&";
 	
 	public String getPlaces(double x, double y,int radius) {
 		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
@@ -87,4 +93,25 @@ public class GoogleRequests {
 		}
 		return null;
 	}
+	public Bitmap getPicture(String photoRef) {
+		URL urlImage = null;
+		try {
+		urlImage = new URL(BASE_URL_PICTURE + "photoreference=" + photoRef + "&maxheight=400&maxwidth=400&sensor=true");
+		} catch (MalformedURLException e) {
+		e.printStackTrace();
+		}
+		HttpURLConnection connection = null;
+		try {
+		connection = (HttpURLConnection) urlImage.openConnection();
+		} catch (IOException e) {
+		e.printStackTrace();
+		}
+		InputStream inputStream = null;
+		try {
+		inputStream = connection.getInputStream();
+		} catch (IOException e) {
+		e.printStackTrace();
+		}
+		return BitmapFactory.decodeStream(inputStream);
+		}
 }

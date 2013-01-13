@@ -50,6 +50,10 @@
             android:name="com.dabdm.travelplan.places.PlacesListActivity"
             android:label="@string/title_activity_places_list" >
         </activity>
+        <activity
+            android:name="com.dabdm.travelplan.ShowDetails"
+            android:label="@string/title_activity_show_details" >
+        </activity>
     </application>
 
 </manifest>
