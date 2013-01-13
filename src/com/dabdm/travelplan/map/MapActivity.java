@@ -20,8 +20,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -68,25 +67,26 @@ public class MapActivity extends FragmentActivity {
 	setContentView(R.layout.activity_map);
 	setUpMapIfNeeded();
 	
+	// Get file name
+	Intent intent = getIntent();
+	Bundle extras = intent.getExtras();
+	String fileName = extras.getString("travelFileName");
 	
 	// TODO get the travel from the file
 	travel = new Travel();
+	
+	// Display the itinerary (if there is more than one place per day
+	if(Math.ceil(((double)travel.getPlaces().size())/travel.getDuration()) > 1) {
+	    displayItineraries();
+	}
 	// Display a marker for each Place
 	addTravelMarkers();
-	// Display the itinerary
-	displayItineraries();
 	
 	// Sets the map type to be "hybrid"
 	mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
-	// Add a marker
-	Marker melbournMarker = addMarker(new LatLng(-37.81319, 144.96298), "Melbourne", "Population: 4,137,400", BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-
-	// Add a polyline
-	Polyline line = addPolyline(new PolylineOptions().add(new LatLng(-37.81319, 144.96298), new LatLng(-31.95285, 115.85734)), 5, Color.BLACK);
-	
-	// Move the camera to the right place
-	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(39.470239, -0.376805), 15));
+	// Move the camera to the right place TODO get the correct zoom or map boundaries
+	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(travel.getPlaceCoordinates(), 15));
 
     }
 
@@ -231,14 +231,47 @@ public class MapActivity extends FragmentActivity {
     private class LoadDirections extends AsyncTask<String, Integer, Boolean> {
 	private static final int    CONNECTION_TIMEOUT = 10000;
 	private static final String BASE_URL	   = "http://maps.googleapis.com/maps/api/directions/json";
-	private String	      responseString     = "";
+	private int daysNumber = travel.getDuration();
+	private ArrayList<Place> travelPlaces = travel.getPlaces();
+	private int travelPlacesLength = travelPlaces.size();
+	private int placesNumber = Math.round(((float)travelPlacesLength) / daysNumber);
 
 	@Override
 	protected Boolean doInBackground(String... params) {
+	    int j = 0;
+	    int i = 0;
+	    int k = 0;
+	    for(int d = 0; d < daysNumber; d++) {
+		ArrayList<Place> dayPlaces = new ArrayList<Place>();
+		j = (d == daysNumber - 1)?travelPlacesLength:(j + placesNumber);
+		for(i = k; i < j; i++) {
+		    dayPlaces.add(travelPlaces.get(i));
+		}
+		if(dayPlaces.size() > 1) {
+		    String encodedItinerary = loadItinerary(dayPlaces);
+		    // Add it to the travel
+		    travel.addItinerary(encodedItinerary);
+		}
+		k += placesNumber;
+	    }
+	    // TODO save the travel in the file
 	    
-	    ArrayList<Place> places = travel.getPlaces();
+	    return true;
+	}
+
+	@Override
+	protected void onPostExecute(Boolean result) {
+	    super.onPostExecute(result);
+	    if (result) {
+		displayItineraries();
+	    }
+	}
+	
+	private String loadItinerary(ArrayList<Place> places) {
+	    
 	    int placesLength = places.size();
 	    
+	    String responseString     = "";
 	    HttpResponse response = null;
 
 	    BasicHttpParams httpParams = new BasicHttpParams();
@@ -268,39 +301,30 @@ public class MapActivity extends FragmentActivity {
 	    } catch (ClientProtocolException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
-		return false;
+		return "";
 	    } catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
-		return false;
+		return "";
 	    } catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
-		return false;
+		return "";
 	    }
 	    HttpEntity entity = response.getEntity();
 	    if (entity != null) {
 		try {
 		    responseString = EntityUtils.toString(entity);
-		    return true;
 		} catch (ParseException e1) {
 		    // TODO Auto-generated catch block
 		    e1.printStackTrace();
-		    return false;
 		} catch (IOException e1) {
 		    // TODO Auto-generated catch block
 		    e1.printStackTrace();
-		    return false;
 		}
 	    }
-	    return false;
-	}
-
-	@Override
-	protected void onPostExecute(Boolean result) {
-	    super.onPostExecute(result);
-	    if (result) {
-		if (responseString.equals("null")) { return; }
+	    
+	    if (responseString.equals("null")) { return ""; }
 
 		// Convert from JSON to Direction object
 		GsonBuilder builder = new GsonBuilder();
@@ -313,17 +337,8 @@ public class MapActivity extends FragmentActivity {
 		    e.printStackTrace();
 		}
 		Directions directions = gson.fromJson(json.toString(), Directions.class);
-
-		// Save the String TODO save it in a database
-		// Get sharedPreferences file
-		SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_FILE_NAME, MODE_PRIVATE);
-		Editor sharedPreferencesEditor = sharedPreferences.edit();
-		sharedPreferencesEditor.putString(SHARED_PREF_ROUTES_KEY, directions.getRoutes().get(0).getOverview_polyline().getPoints());
-		// Commit
-		sharedPreferencesEditor.commit();
-
-		Polyline line = addEncodedPolyline(directions.getRoutes().get(0).getOverview_polyline().getPoints(), 5, Color.BLUE);
-	    }
+		
+		return directions.getRoutes().get(0).getOverview_polyline().getPoints();
 	}
     }
 }

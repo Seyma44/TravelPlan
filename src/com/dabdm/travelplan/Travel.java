@@ -74,4 +74,7 @@ public class Travel implements Serializable {
     public void setItineraries(ArrayList<String> itineraries) {
         this.itineraries = itineraries;
     }
+    public void addItinerary(String encodedItinerary) {
+	this.itineraries.add(encodedItinerary);
+    }
 }
