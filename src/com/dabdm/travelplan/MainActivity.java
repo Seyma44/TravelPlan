@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				// on click, start the Map activity
 				// startActivity(new Intent(MainActivity.this, MapActivity.class));
-				Intent intent = new Intent(MainActivity.this,ShowDetails.class);
+				Intent intent = new Intent(MainActivity.this, ShowDetails.class);
 				intent.putExtra("placeReference",placeReference); 
 				startActivity(intent);
 			}
