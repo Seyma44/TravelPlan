@@ -83,15 +83,6 @@ public class MapActivity extends FragmentActivity {
 	// Move the camera to the right place
 	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(39.470239, -0.376805), 15));
 
-	// Get sharedPreferences file
-	SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_FILE_NAME, MODE_PRIVATE);
-	String encodedPolyline = sharedPreferences.getString(SHARED_PREF_ROUTES_KEY, "");
-	if (encodedPolyline.equals("")) {
-	    // Load routes from internet
-	    new LoadDirections().execute();
-	} else {
-	   Polyline line2 = addEncodedPolyline(encodedPolyline, 5, Color.BLUE);
-	}
     }
 
     /**
@@ -176,16 +167,18 @@ public class MapActivity extends FragmentActivity {
      * Calculate and display the itinerary for each day
      */
     private void displayItineraries() {
+	// TODO check if there is more than 1 place
 	ArrayList<String> itineraries = travel.getItineraries();
 	int itineraryNumber = itineraries.size();
 	// If the itineraries have already been calculated
 	if(itineraryNumber == 1) {
-	    // For 1 day, juste display the itinerary
+	    // For 1 day, just display the itinerary
 	    addEncodedPolyline(itineraries.get(0), POLYLINE_WIDTH, POLYLINE_WIDTH);
 	} else if(itineraryNumber > 1) {
 	    // TODO display for the different day
 	} else { // If the itineraries have not been calculated yet
-	    
+	    // Load itineraries from Internet
+	    new LoadDirections().execute();
 	}
     }
 
@@ -199,6 +192,10 @@ public class MapActivity extends FragmentActivity {
 
 	@Override
 	protected Boolean doInBackground(String... params) {
+	    
+	    ArrayList<Place> places = travel.getPlaces();
+	    int placesLength = places.size();
+	    
 	    HttpResponse response = null;
 
 	    BasicHttpParams httpParams = new BasicHttpParams();
@@ -208,14 +205,18 @@ public class MapActivity extends FragmentActivity {
 	    HttpClient client = new DefaultHttpClient();
 
 	    List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-	    pairs.add(new BasicNameValuePair("origin", "Valencia+Cathedral,Valencia,Spain"));
-	    pairs.add(new BasicNameValuePair("destination", "Ciudad+de+las+Artes+y+las+Ciencias,Valencia,Spain"));
-	    pairs.add(new BasicNameValuePair(
-		    "waypoints",
-		    "optimize:true|estadio+mestalla,Valencia,Spain|Mercat+central,Valencia,Spain|Universitat+Politecnica+de+Valencia,Valencia,Spain|Torres+de+Serrano,Valencia,Spain"));
+	    pairs.add(new BasicNameValuePair("origin", places.get(0).getAddressForRequest()));
+	    pairs.add(new BasicNameValuePair("destination", places.get(placesLength - 1).getAddressForRequest()));
+	    if(placesLength > 2) {
+		String waypoints = "optimize:true";
+		for(int i = 1; i < placesLength - 1; i++) {
+		    waypoints = waypoints.concat("|" + places.get(i).getAddressForRequest());
+		}
+		pairs.add(new BasicNameValuePair("waypoints", waypoints));
+	    }
 	    pairs.add(new BasicNameValuePair("units", "metric"));
 	    pairs.add(new BasicNameValuePair("sensor", "true"));
-	    pairs.add(new BasicNameValuePair("mode", "walking"));
+	    pairs.add(new BasicNameValuePair("mode", travel.getTransportMode()));
 	    HttpGet request = new HttpGet(BASE_URL + "?" + URLEncodedUtils.format(pairs, "utf-8"));
 	    request.setHeader("Accept", "application/json");
 	    request.setParams(httpParams);

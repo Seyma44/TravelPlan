@@ -30,6 +30,15 @@ public class Place {
     public void setFormatted_address(String formatted_address) {
         this.formatted_address = formatted_address;
     }
+    /**
+     * Return the formatted address in a correct format to use it in a direction request
+     * @return the address with the correct format
+     */
+    public String getAddressForRequest() {
+	String result = getFormatted_address().replaceAll(",\\s", ",");
+	return result.replaceAll("\\s", "+");
+    }
+    
     public String getVicinity() {
         return vicinity;
     }

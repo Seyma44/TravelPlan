@@ -1,22 +1,15 @@
 package com.dabdm.travelplan;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import com.dabdm.travelplan.map.MapActivity;
-import com.dabdm.travelplan.places.PlacesListActivity;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+
+import com.dabdm.travelplan.places.Place;
+import com.dabdm.travelplan.places.PlacesListActivity;
 
 public class MainActivity extends Activity {
 
@@ -24,6 +17,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		//test();
 		Button buttonNext = (Button) findViewById(R.id.button1);
 		buttonNext.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -39,6 +33,13 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
+	}
+	
+	public void test() {
+	    Place p = new Place();
+	    p.setFormatted_address("483 George Street, Sydney NSW, Australia");
+	    Log.i("test", p.getFormatted_address());
+	    Log.i("test", p.getAddressForRequest());
 	}
 
 }
