@@ -67,7 +67,8 @@ public class MapActivity extends FragmentActivity implements LocationListener {
     private MenuItem	 menuItem0     = null;
     private MenuItem	 menuItem1     = null;
     private String fileName;
-    private Marker localisationMarker = null;
+    private ArrayList<Marker> displayedMarkers = new ArrayList<Marker>();
+    private ArrayList< ArrayList<Place> > dayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +84,14 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	// Get the travel from the file
 	travel = StorageHelper.getTravelObject(getFilesDir(), fileName);
 	
+	dividePlaces();
+	
 	// Display the itinerary (if there is more than one place per day
-	if(Math.ceil(((double)travel.getPlaces().size())/travel.getDuration()) > 1) {
-	    Log.i("display iti", "yes");
+	//if(Math.ceil(((double)travel.getPlaces().size())/travel.getDuration()) > 1) 
 	    displayItineraries();
-	}
+	    
 	// Display a marker for each Place
-	addTravelMarkers();
+	//addTravelMarkers();
 		
 	initLocation();
 	
@@ -112,8 +114,13 @@ public class MapActivity extends FragmentActivity implements LocationListener {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 	int itemId = item.getItemId();
-	currentItinerary.remove();
-	itineraryIndex += (itemId == 0)?(-1):1;
+	if(currentItinerary != null) {
+	    currentItinerary.remove();
+	}
+	Log.i("itemId", itemId + "");
+	itineraryIndex += (itemId == R.id.menu_prev_day)?(-1):1;
+	Log.i("itiIndex", itineraryIndex + "");
+	setTitle(getResources().getString(R.string.title_activity_map) + " " + (itineraryIndex + 1));
 	displayItineraries();
 	return super.onOptionsItemSelected(item);
     }
@@ -210,6 +217,23 @@ public class MapActivity extends FragmentActivity implements LocationListener {
     }
     
     /**
+     * Used to add a Marker for each Place in the Travel
+     * @param places a list of Place for which we want a Marker
+     */
+    public void addPlacesMarkers(ArrayList<Place> places) {
+	// Remove existing Marker
+	for(Marker ma : displayedMarkers) {
+	    ma.remove();
+	}
+	displayedMarkers.clear();
+	int placesLength = places.size();
+	for(int i = 0; i < placesLength; i++) {
+	   Marker m = addPlaceMarker(places.get(i));
+	   displayedMarkers.add(m);
+	}
+    }
+    
+    /**
      * Used to add a marker to point out a specific place
      * @param place the Place object to mark
      * @return the new Marker
@@ -257,23 +281,54 @@ public class MapActivity extends FragmentActivity implements LocationListener {
     public Polyline addEncodedPolyline(String encodedPolyline, int width, int color) {
 	return mMap.addPolyline(OverviewPolyline.decodePoly(encodedPolyline).width(width).color(color));
     }
+    
+    /**
+     * Divide Place for each day
+     */
+    private void dividePlaces() {
+	int daysNumber = travel.getDuration();
+	ArrayList<Place> travelPlaces = travel.getPlaces();
+	int travelPlacesLength = travelPlaces.size();
+	int placesNumber = Math.round(((float)travelPlacesLength) / daysNumber);
+	int j = 0;
+	int i = 0;
+	int k = 0;
+	
+	dayList = new ArrayList<ArrayList<Place>>();
+	for (int d = 0; d < daysNumber; d++) {
+	    ArrayList<Place> dayPlaces = new ArrayList<Place>();
+	    j = (d == daysNumber - 1) ? travelPlacesLength : (j + placesNumber);
+	    for (i = k; i < j; i++) {
+		dayPlaces.add(travelPlaces.get(i));
+	    }
+	    dayList.add(dayPlaces);
+	    k += placesNumber;
+	}
+    }
 
     /**
      * Calculate and display the itinerary for each day
      */
     private void displayItineraries() {
+	
 	// TODO check if there is more than 1 place
 	ArrayList<String> itineraries = travel.getItineraries();
 	int itineraryNumber = itineraries.size();
 	// If the itineraries have already been calculated
 	if(itineraryNumber == 1) {
 	    Log.i("displayItineraries", "1");
-	    // For 1 day, just display the itinerary
-	    currentItinerary = addEncodedPolyline(itineraries.get(0), POLYLINE_WIDTH, POLYLINE_COLOR);
+	    // For 1 day, just display the places and the itinerary
+	    addPlacesMarkers(dayList.get(0));
+	    if(!itineraries.get(0).equals("")) {
+		currentItinerary = addEncodedPolyline(itineraries.get(0), POLYLINE_WIDTH, POLYLINE_COLOR);
+	    }
 	} else if(itineraryNumber > 1) {
 	    // TODO display for the different days
-	    Log.i("displayItineraries", "plusieurs iti");
-	    currentItinerary = addEncodedPolyline(itineraries.get(itineraryIndex), POLYLINE_WIDTH, POLYLINE_COLOR);
+	    Log.i("displayItineraries", "plusieurs iti "+ dayList.get(itineraryIndex).size() + " places");
+	    addPlacesMarkers(dayList.get(itineraryIndex));
+	    if(!itineraries.get(itineraryIndex).equals("")) {
+		currentItinerary = addEncodedPolyline(itineraries.get(itineraryIndex), POLYLINE_WIDTH, POLYLINE_COLOR);
+	    }
 	} else { // If the itineraries have not been calculated yet
 	    Log.i("displayItineraries", "load from internet");
 	    // Load itineraries from Internet
@@ -287,29 +342,18 @@ public class MapActivity extends FragmentActivity implements LocationListener {
     private class LoadDirections extends AsyncTask<String, Integer, Boolean> {
 	private static final int    CONNECTION_TIMEOUT = 10000;
 	private static final String BASE_URL	   = "http://maps.googleapis.com/maps/api/directions/json";
-	private int daysNumber = travel.getDuration();
-	private ArrayList<Place> travelPlaces = travel.getPlaces();
-	private int travelPlacesLength = travelPlaces.size();
-	private int placesNumber = Math.round(((float)travelPlacesLength) / daysNumber);
 
 	@Override
 	protected Boolean doInBackground(String... params) {
-	    int j = 0;
-	    int i = 0;
-	    int k = 0;
-	    for(int d = 0; d < daysNumber; d++) {
-		ArrayList<Place> dayPlaces = new ArrayList<Place>();
-		j = (d == daysNumber - 1)?travelPlacesLength:(j + placesNumber);
-		for(i = k; i < j; i++) {
-		    dayPlaces.add(travelPlaces.get(i));
-		}
-		 Log.i("dayPlace size", " " + dayPlaces.size());
-		if(dayPlaces.size() > 1) {
-		    String encodedItinerary = loadItinerary(dayPlaces);
+	    
+	    for(ArrayList<Place> l : dayList) {
+		if(l.size() > 1) {
+		    String encodedItinerary = loadItinerary(l);
 		    // Add it to the travel
 		    travel.addItinerary(encodedItinerary);
-		}
-		k += placesNumber;
+		} else {
+		    travel.addItinerary("");
+		}		
 	    }
 	    // Save the travel in the file
 	    StorageHelper.saveTravelObject(getFilesDir(), fileName, travel);
