@@ -1,5 +1,6 @@
 package com.dabdm.travelplan.map;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
+import com.dabdm.travelplan.FtpHelper;
 import com.dabdm.travelplan.R;
 import com.dabdm.travelplan.StorageHelper;
 import com.dabdm.travelplan.Travel;
@@ -67,8 +69,6 @@ public class MapActivity extends FragmentActivity implements LocationListener {
     private Travel		      travel;
     private Polyline		    currentItinerary      = null;
     private int			 itineraryIndex	= 0;
-    private MenuItem		    menuItem0	     = null;
-    private MenuItem		    menuItem1	     = null;
     private String		      fileName	      = "";
     private ArrayList<Marker>	   displayedMarkers      = new ArrayList<Marker>();
     private ArrayList<ArrayList<Place>> dayList;
@@ -112,8 +112,6 @@ public class MapActivity extends FragmentActivity implements LocationListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 	getMenuInflater().inflate(R.menu.activity_map, menu);
-	menuItem0 = menu.getItem(0);
-	menuItem1 = menu.getItem(1);
 	return super.onCreateOptionsMenu(menu);
     }
 
@@ -408,6 +406,13 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	    }
 	    // Save the travel in the file
 	    StorageHelper.saveTravelObject(getFilesDir(), fileName, travel);
+
+	    // Save the travel on server
+	    FtpHelper ftp = new FtpHelper();
+	    File file = new File(getFilesDir() + "/TRAVELPLAN" + fileName);
+	    ftp.connect();
+	    ftp.put(file);
+	    ftp.close();
 
 	    return true;
 	}

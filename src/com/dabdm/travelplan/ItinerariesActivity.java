@@ -28,10 +28,9 @@ public class ItinerariesActivity extends ListActivity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_itineraries);
 	
-	test();
+	//test();
 	
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, StorageHelper.getTravels(this.fileList()));
-        setListAdapter(adapter);     
+             
 	
 
 	Button button = (Button) findViewById(R.id.open_map_button);
@@ -39,10 +38,30 @@ public class ItinerariesActivity extends ListActivity {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		//startActivity(new Intent(ItinerariesActivity.this.getApplicationContext(), DestinationActivity.class));
+		startActivity(new Intent(ItinerariesActivity.this.getApplicationContext(), DestinationActivity.class));
+	    }
+	});
+	Button dlButton = (Button) findViewById(R.id.open_dl_button);
+	dlButton.setOnClickListener(new View.OnClickListener() {
+	    
+	    @Override
+	    public void onClick(View v) {
+		startActivity(new Intent(ItinerariesActivity.this.getApplicationContext(), DownloadActivity.class));
 	    }
 	});
     }
+    
+    
+
+    @Override
+    protected void onResume() {
+	// TODO Auto-generated method stub
+	super.onResume();
+	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, StorageHelper.getTravels(this.fileList()));
+        setListAdapter(adapter);
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
