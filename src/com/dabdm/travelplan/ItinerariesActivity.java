@@ -67,7 +67,7 @@ public class ItinerariesActivity extends ListActivity {
 	    Log.i("test", p.getAddressForRequest());*/
 	    
 	    Travel t = new Travel();
-	    t.setDuration(5);
+	    t.setDuration(2);
 	    t.setLat(-33.86);
 	    t.setLng(151.205);
 	    t.setPlaceName("Australia");
