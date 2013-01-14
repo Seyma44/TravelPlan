@@ -21,7 +21,9 @@ public class Place implements Serializable {
     private String reference;
     private String[] types;
     private PlaceDetails details;
+    private Geometry geometry;
     
+
     /**
      * @return a description message for that place
      */
@@ -30,12 +32,13 @@ public class Place implements Serializable {
 	return "test description for " + getName();
     }
     
-    public String getFormatted_address() {
-        return formatted_address;
+    /**
+     * @return the Place coordinates as a LatLng
+     */
+    public LatLng getCoordinates() {
+	return new LatLng(this.getGeometry().getLocation().getLat(), this.getGeometry().getLocation().getLng());
     }
-    public void setFormatted_address(String formatted_address) {
-        this.formatted_address = formatted_address;
-    }
+    
     /**
      * Return the formatted address in a correct format to use it in a direction request
      * @return the address with the correct format
@@ -45,6 +48,12 @@ public class Place implements Serializable {
 	return result.replaceAll("\\s", "+");
     }
     
+    public String getFormatted_address() {
+        return formatted_address;
+    }
+    public void setFormatted_address(String formatted_address) {
+        this.formatted_address = formatted_address;
+    }    
     public String getVicinity() {
         return vicinity;
     }
@@ -87,7 +96,59 @@ public class Place implements Serializable {
     public void setTypes(String[] types) {
         this.types = types;
     }
-    public LatLng getCoordinates() {
-	return null;
+    
+    public PlaceDetails getDetails() {
+        return details;
     }
+
+    public void setDetails(PlaceDetails details) {
+        this.details = details;
+    }
+
+    public Geometry getGeometry() {
+        return geometry;
+    }
+
+    public void setGeometry(Geometry geometry) {
+        this.geometry = geometry;
+    }
+    
+    
+    
+    public static class Geometry implements Serializable
+    {
+        private static final long serialVersionUID = 627479979363856000L;
+	
+	private Location location;
+
+	public Location getLocation() {
+	    return location;
+	}
+
+	public void setLocation(Location location) {
+	    this.location = location;
+	}
+    }
+ 
+    public static class Location implements Serializable
+    {
+        private static final long serialVersionUID = -3448797627560173693L;
+        
+	private double lat;
+        private double lng;
+        
+	public double getLat() {
+	    return lat;
+	}
+	public void setLat(double lat) {
+	    this.lat = lat;
+	}
+	public double getLng() {
+	    return lng;
+	}
+	public void setLng(double lng) {
+	    this.lng = lng;
+	}
+    }
+    
 }

@@ -35,5 +35,6 @@
     <string name="title_activity_map_fragment">Map</string>
     <string name="title_activity_details">DetailsActivity</string>
     <string name="image_place">Image Place</string>
+    <string name="title_activity_places_map">Places Localization</string>
 
 </resources>

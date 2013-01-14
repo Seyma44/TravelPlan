@@ -67,7 +67,6 @@ public class MapActivity extends FragmentActivity implements LocationListener {
     private MenuItem	 menuItem1     = null;
     private String fileName;
     private Marker localisationMarker = null;
-    //BitmapDescriptor iconLocation = BitmapDescriptorFactory.fromResource(R.drawable.blue_dot);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
