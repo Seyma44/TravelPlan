@@ -53,6 +53,15 @@
             android:name="com.dabdm.travelplan.map.MapActivity"
             android:label="@string/title_activity_map" >
         </activity>
+        <activity
+            android:name="com.dabdm.travelplan.DestinationActivity"
+            android:label="@string/title_activity_destination" >
+        </activity>
+                <activity
+            android:name="com.dabdm.travelplan.PlacesActivity"
+            android:label="@string/title_activity_places" >
+        </activity>
+        
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
