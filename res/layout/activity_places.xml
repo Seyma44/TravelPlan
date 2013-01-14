@@ -1,34 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
   	android:background="@color/Khaki"
     tools:context=".PlacesActivity"
     tools:ignore="MergeRootFrame" >
-    <TabHost android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/tabHost"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
-    <TabWidget
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@android:id/tabs"
-    style="@style/tabbar"
-    />
-    <FrameLayout
-	                android:id="@android:id/tabcontent"
-	                android:layout_width="0dp"
-	                android:layout_height="0dp"
-	                android:layout_weight="0"/>
-	 
-    <FrameLayout
-		            android:id="@+android:id/realtabcontent"
-	                android:layout_width="fill_parent"
-	                android:layout_height="0dp"
-	                android:layout_weight="1"/>
+
+
+	
+        <ListView
+            android:id="@+id/listplaces"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_marginLeft="5dp" 
+            android:layout_marginRight="5dp"
+            android:textAlignment="center"
+            >
+
+        </ListView>
+
+		<RelativeLayout
+		    android:layout_width="match_parent"
+            android:layout_height="match_parent"> 
+		<Button
+            android:id="@+id/button_next_places"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button"
+            android:text="@string/next_step"
+            android:textColor="@color/Wheat" />
+		</RelativeLayout>
+		
     
-    </TabHost>
-    </FrameLayout>
+    </LinearLayout>
