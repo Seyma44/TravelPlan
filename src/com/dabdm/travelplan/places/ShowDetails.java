@@ -12,11 +12,18 @@ import com.google.gson.GsonBuilder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
+import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ShowDetails extends Activity {
@@ -29,7 +36,8 @@ public class ShowDetails extends Activity {
 		setContentView(R.layout.activity_show_details);
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
-		
+		ImageView imageView = (ImageView) findViewById(R.id.imageView1);
+		imageView.setVisibility(View.INVISIBLE);
 		new LoadPlaces().execute(extras.getString("placeReference"));
 	}
 
@@ -74,125 +82,115 @@ public class ShowDetails extends Activity {
 
 				PlaceDetailsResponse details = gson.fromJson(json.toString(),
 						PlaceDetailsResponse.class);
-				refPicture = details.result.photos[0].photo_reference;
-				Log.i("tes",
-						String.valueOf(details.result.opening_hours.periods[0].close.day));
-				TextView tv = (TextView) findViewById(R.id.Place);
+				TextView tv = (TextView) findViewById(R.id.description_place);
+				TextView tv2 = (TextView) findViewById(R.id.info_place);
+				tv2.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+				tv.setMovementMethod(new ScrollingMovementMethod());
 				tv.setText("\n");
+				tv2.append("\n	");
+				tv2.setTextSize(35);
+				tv2.append(details.result.getRating()+  " / 5 ");
+				tv2.append("  ");
 				int i = 0;
+				
+				tv2.append("\n");
+				
+				tv.append(Html.fromHtml("<h2> " + details.result.getName() + "\n</h2>"));
+				for (i = 0; i < details.result.getOpening_hours().getPeriods().length; i++) {
 
-				for (i = 0; i < details.result.opening_hours.periods.length; i++) {
-
-					if (details.result.opening_hours.periods[i].open != null) {
-						switch (details.result.opening_hours.periods[i].open.day) {
+					if (details.result.getOpening_hours().getPeriods()[i].getOpen() != null) {
+						switch (details.result.getOpening_hours().getPeriods()[i].getOpen().getDay()) {
 
 						case 1:
-							tv.append("Monday : \nOpen: ");
-							tv.append(details.result.opening_hours.periods[i].open.time
+							tv.append(Html.fromHtml("<h5> MONDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
 									.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].open.time
-											.substring(2, 4) + "     ");
-							tv.append("Close"
-									+ details.result.opening_hours.periods[i].close.time
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + "  " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
 											.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].close.time
-											.substring(2, 4) + "\n\n");
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
 							break;
 						case 2:
-							tv.append("Tuesday : \nOpen: ");
-							tv.append(details.result.opening_hours.periods[i].open.time
+							tv.append(Html.fromHtml("<h5> TUESDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
 									.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].open.time
-											.substring(2, 4) + "     ");
-							tv.append("Close"
-									+ details.result.opening_hours.periods[i].close.time
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
 											.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].close.time
-											.substring(2, 4) + "\n\n");
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
 							break;
 						case 3:
-							tv.append("Wednesday : \nOpen: ");
-							tv.append(details.result.opening_hours.periods[i].open.time
+							tv.append(Html.fromHtml("<h5> WEDNESDAY "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
 									.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].open.time
-											.substring(2, 4) + "     ");
-							tv.append("Close"
-									+ details.result.opening_hours.periods[i].close.time
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
 											.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].close.time
-											.substring(2, 4) + "\n\n");
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
 							break;
 						case 4:
-							tv.append("Thursday : \nOpen: ");
-							tv.append(details.result.opening_hours.periods[i].open.time
+							tv.append(Html.fromHtml("<h5> THURSDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
 									.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].open.time
-											.substring(2, 4) + "     ");
-							tv.append("Close: "
-									+ details.result.opening_hours.periods[i].close.time
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
 											.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].close.time
-											.substring(2, 4) + "\n\n");
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
 							break;
 						case 5:
-							tv.append("Friday : \nOpen: ");
-							tv.append(details.result.opening_hours.periods[i].open.time
+							tv.append(Html.fromHtml("<h5> FRIDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
 									.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].open.time
-											.substring(2, 4) + "     ");
-							tv.append("Close: "
-									+ details.result.opening_hours.periods[i].close.time
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
 											.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].close.time
-											.substring(2, 4) + "\n\n");
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
 							break;
 						case 6:
-							tv.append("Saturday : \nOpen: ");
-							tv.append(details.result.opening_hours.periods[i].open.time
+							tv.append(Html.fromHtml("<h5> SATURDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
 									.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].open.time
-											.substring(2, 4) + "     ");
-							tv.append("Close: "
-									+ details.result.opening_hours.periods[i].close.time
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
 											.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].close.time
-											.substring(2, 4) + "\n\n");
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
 							break;
 						case 7:
-							tv.append("Sunday : \nOpen: ");
-							tv.append(details.result.opening_hours.periods[i].open.time
+							tv.append(Html.fromHtml("<h5> SUNDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
 									.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].open.time
-											.substring(2, 4) + "     ");
-							tv.append("Close: "
-									+ details.result.opening_hours.periods[i].close.time
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " Close:" + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
 											.substring(0, 2)
 									+ ":"
-									+ details.result.opening_hours.periods[i].close.time
-											.substring(2, 4) + "\n\n");
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
 							break;
 						}
 
 					}
 
 				}
-				tv.append("Phone number: "
-						+ details.result.international_phone_number);
+				tv.append("\n");
+				tv.append(Html.fromHtml("\n\n<H3> Phone number: "+ details.result.getInternational_phone_number()+ "</H3>"));
+
+				refPicture= details.result.getPhotos()[0].getPhoto_reference();
 			}
+			
 			new LoadImage().execute();
+			
 		}
 	}
 
@@ -208,9 +206,11 @@ public class ShowDetails extends Activity {
 
 		@Override
 		protected void onPostExecute(Boolean bool) {
-			Log.i("lo", "on charge l'iamge");
-			ImageView imgView = (ImageView) findViewById(R.id.PlaceImage);
+			ImageView imgView = (ImageView) findViewById(R.id.imageView1);
 			imgView.setImageBitmap(image);
+			imgView.setVisibility(View.VISIBLE);
+			
+			
 		}
 	}
 }

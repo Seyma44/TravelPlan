@@ -97,7 +97,7 @@ public class PlacesListActivity extends Activity {
 		*/
 		
 		PlaceDetailsResponse details = gson.fromJson(json.toString(), PlaceDetailsResponse.class);
-		Log.i("tes", String.valueOf(details.result.opening_hours.periods[0].close.day));
+		Log.i("tes", String.valueOf(details.result.getOpening_hours().getPeriods()[0].getClose().getDay()));
 	    }
 	}
     }

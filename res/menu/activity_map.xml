@@ -6,5 +6,12 @@
     <item
         android:id="@+id/menu_next_day"
         android:title="@string/menu_next_day"/>
+    
+    <item
+        android:id="@+id/menu_upload"
+        android:title="@string/menu_upload"/>
+    <item
+        android:id="@+id/menu_facebook"
+        android:title="@string/menu_facebook"/>
 
 </menu>

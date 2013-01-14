@@ -92,7 +92,7 @@ public class FtpHelper {
 	 * This method get a file, which name is given in parameter, from the server.
 	 * Then it stores it in the outputstream given in parameter.
 	 */
-	public void get(String fileName, OutputStream out) {
+	public boolean get(String fileName, OutputStream out) {
 		InputStream inStream;
 		try {
 			inStream = ftpClient.retrieveFileStream(fileName);
@@ -107,9 +107,11 @@ public class FtpHelper {
 			inStream.close();
 			out.flush();
 			out.close();
+			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 	/*
