@@ -18,6 +18,7 @@
             android:layout_marginLeft="5dp" 
             android:layout_marginRight="5dp"
             android:textAlignment="center"
+			android:choiceMode="multipleChoice"
             >
 
         </ListView>

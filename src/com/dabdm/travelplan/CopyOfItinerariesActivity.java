@@ -21,7 +21,7 @@ import android.widget.ListView;
  * An activity where you can choose one of the existing itineraries or create a new one
  * 
  */
-public class ItinerariesActivity extends ListActivity {
+public class CopyOfItinerariesActivity extends ListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +30,12 @@ public class ItinerariesActivity extends ListActivity {
 	
 	test();
 	
-             
-	
-
 	Button button = (Button) findViewById(R.id.open_map_button);
 	button.setOnClickListener(new View.OnClickListener() {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		startActivity(new Intent(ItinerariesActivity.this.getApplicationContext(), DestinationActivity.class));
+		startActivity(new Intent(CopyOfItinerariesActivity.this.getApplicationContext(), DestinationActivity.class));
 	    }
 	});
 	Button dlButton = (Button) findViewById(R.id.open_dl_button);
@@ -46,7 +43,7 @@ public class ItinerariesActivity extends ListActivity {
 	    
 	    @Override
 	    public void onClick(View v) {
-		startActivity(new Intent(ItinerariesActivity.this.getApplicationContext(), DownloadActivity.class));
+		startActivity(new Intent(CopyOfItinerariesActivity.this.getApplicationContext(), DownloadActivity.class));
 	    }
 	});
     }
@@ -92,7 +89,7 @@ public class ItinerariesActivity extends ListActivity {
 	    t.setPlaceName("Australia");
 	    t.setRadius(20000);
 	    t.setTransportMode("walking");
-	    t.setTravelName("ADM_Australia" + System.currentTimeMillis());
+	    t.setTravelName("last" + System.currentTimeMillis());
 	    ArrayList<Place> places = new ArrayList<Place>();
 	    Place p1 = new Place();
 	    p1.setFormatted_address("529 Kent Street, Sydney NSW, Australia");
