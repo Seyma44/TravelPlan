@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -28,9 +29,10 @@ public class ItinerariesActivity extends ListActivity {
 	setContentView(R.layout.activity_itineraries);
 	
 	test();
-
-	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, this.fileList());
-	setListAdapter(adapter);
+	
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, StorageHelper.getTravels(this.fileList()));
+        setListAdapter(adapter);     
+	
 
 	Button button = (Button) findViewById(R.id.open_map_button);
 	button.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +55,8 @@ public class ItinerariesActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
 	String item = (String) getListAdapter().getItem(position);
 	Intent intent = new Intent(this, MapActivity.class);
-	intent.putExtra("travelFileName", this.fileList()[position]);
+	Log.i("test1", StorageHelper.getTravels(this.fileList())[position]);
+	intent.putExtra("travelFileName", StorageHelper.getTravels(this.fileList())[position]);
 	startActivity(intent);
     }
     
@@ -65,11 +68,12 @@ public class ItinerariesActivity extends ListActivity {
 	    
 	    Travel t = new Travel();
 	    t.setDuration(2);
-	    t.setPlaceCoordinates(new LatLng(-33.86, 151.205));
+	    t.setLat(-33.86);
+	    t.setLng(151.205);
 	    t.setPlaceName("Australia");
 	    t.setRadius(20000);
 	    t.setTransportMode("walking");
-	    t.setTravelName("Australia" + System.currentTimeMillis());
+	    t.setTravelName("ADM_Australia" + System.currentTimeMillis());
 	    ArrayList<Place> places = new ArrayList<Place>();
 	    Place p1 = new Place();
 	    p1.setFormatted_address("529 Kent Street, Sydney NSW, Australia");
@@ -98,6 +102,36 @@ public class ItinerariesActivity extends ListActivity {
 	    p2.setName("Rockpool");
 	    p2.setRating((float) 4.0);
 	    places.add(p2);
+	    
+	    Place p4 = new Place();
+	    p4.setFormatted_address("Upper Level, Overseas Passenger Terminal/5 Hickson Road, The Rocks NSW, Australia");
+	    Place.Geometry g4 = new Place.Geometry();
+	    Place.Location l4 = new Place.Location();
+	    l4.setLat(-33.8583790);
+	    l4.setLng(151.2100270);
+	    g4.setLocation(l4);
+	    p4.setGeometry(g4);
+	    p4.setIcon("http://maps.gstatic.com/mapfiles/place_api/icons/cafe-71.png");
+	    p4.setId("f181b872b9bc680c8966df3e5770ae9839115440");
+	    p4.setName("Quay");
+	    p4.setRating((float) 4.1);
+	    places.add(p4);
+	    
+	    Place p3 = new Place();
+	    p3.setFormatted_address("483 George Street, Sydney NSW, Australia");
+	    Place.Geometry g3 = new Place.Geometry();
+	    Place.Location l3 = new Place.Location();
+	    l3.setLat(-33.8731950);
+	    l3.setLng(151.2063380);
+	    g3.setLocation(l3);
+	    p3.setGeometry(g3);
+	    p3.setIcon("http://maps.gstatic.com/mapfiles/place_api/icons/civic_building-71.png");
+	    p3.setId("017049cb4e82412aaf0efbde890e82b7f2987c16");
+	    p3.setName("Chinatown Sydney");
+	    p3.setRating((float) 4.0);
+	    places.add(p3);
+	    
+	    
 	    
 	    t.setPlaces(places);
 	    

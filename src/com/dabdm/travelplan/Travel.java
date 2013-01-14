@@ -18,7 +18,9 @@ public class Travel implements Serializable {
     private ArrayList<String> itineraries = new ArrayList<String>();
     private String travelName; // The name of the project
     private String placeName; // The place (city) you visit
-    private LatLng placeCoordinates; // The coordinates of the place you visit
+   // private LatLng placeCoordinates; // The coordinates of the place you visit
+    private double lat;
+    private double lng;
     private int radius; // Radius (in meters) from the placeCoordinates where to search for places to visit
     private int duration; // Travel duration in days
     private String transportMode; // walking, driving, transit, bicycling
@@ -36,10 +38,19 @@ public class Travel implements Serializable {
         this.placeName = placeName;
     }
     public LatLng getPlaceCoordinates() {
-        return placeCoordinates;
+        return new LatLng(lat, lng);
     }
-    public void setPlaceCoordinates(LatLng placeCoordinates) {
-        this.placeCoordinates = placeCoordinates;
+    public double getLat() {
+        return lat;
+    }
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+    public double getLng() {
+        return lng;
+    }
+    public void setLng(double lng) {
+        this.lng = lng;
     }
     public int getRadius() {
         return radius;

@@ -29,6 +29,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -78,12 +79,13 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	Intent intent = getIntent();
 	Bundle extras = intent.getExtras();
 	fileName = extras.getString("travelFileName");
-	
+	Log.i("test", "filename " + fileName);
 	// Get the travel from the file
 	travel = StorageHelper.getTravelObject(getFilesDir(), fileName);
 	
 	// Display the itinerary (if there is more than one place per day
 	if(Math.ceil(((double)travel.getPlaces().size())/travel.getDuration()) > 1) {
+	    Log.i("display iti", "yes");
 	    displayItineraries();
 	}
 	// Display a marker for each Place
@@ -265,12 +267,15 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	int itineraryNumber = itineraries.size();
 	// If the itineraries have already been calculated
 	if(itineraryNumber == 1) {
+	    Log.i("displayItineraries", "1");
 	    // For 1 day, just display the itinerary
 	    currentItinerary = addEncodedPolyline(itineraries.get(0), POLYLINE_WIDTH, POLYLINE_COLOR);
 	} else if(itineraryNumber > 1) {
 	    // TODO display for the different days
+	    Log.i("displayItineraries", "plusieurs iti");
 	    currentItinerary = addEncodedPolyline(itineraries.get(itineraryIndex), POLYLINE_WIDTH, POLYLINE_COLOR);
 	} else { // If the itineraries have not been calculated yet
+	    Log.i("displayItineraries", "load from internet");
 	    // Load itineraries from Internet
 	    new LoadDirections().execute();
 	}
@@ -298,6 +303,7 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 		for(i = k; i < j; i++) {
 		    dayPlaces.add(travelPlaces.get(i));
 		}
+		 Log.i("dayPlace size", " " + dayPlaces.size());
 		if(dayPlaces.size() > 1) {
 		    String encodedItinerary = loadItinerary(dayPlaces);
 		    // Add it to the travel
@@ -345,6 +351,7 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	    pairs.add(new BasicNameValuePair("units", "metric"));
 	    pairs.add(new BasicNameValuePair("sensor", "true"));
 	    pairs.add(new BasicNameValuePair("mode", travel.getTransportMode()));
+	    Log.i("url", BASE_URL + "?" + URLEncodedUtils.format(pairs, "utf-8"));
 	    HttpGet request = new HttpGet(BASE_URL + "?" + URLEncodedUtils.format(pairs, "utf-8"));
 	    request.setHeader("Accept", "application/json");
 	    request.setParams(httpParams);
@@ -389,7 +396,7 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 		    e.printStackTrace();
 		}
 		Directions directions = gson.fromJson(json.toString(), Directions.class);
-		
+		Log.i("response", json.toString());
 		return directions.getRoutes().get(0).getOverview_polyline().getPoints();
 	}
     }
