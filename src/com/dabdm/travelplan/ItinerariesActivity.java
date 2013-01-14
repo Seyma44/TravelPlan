@@ -28,7 +28,7 @@ public class ItinerariesActivity extends ListActivity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_itineraries);
 	
-	test();
+	//test();
 	
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, StorageHelper.getTravels(this.fileList()));
         setListAdapter(adapter);     
@@ -39,7 +39,7 @@ public class ItinerariesActivity extends ListActivity {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		//startActivity(new Intent(ItinerariesActivity.this.getApplicationContext(), DestinationActivity.class));
+	    	startActivity(new Intent(ItinerariesActivity.this.getApplicationContext(), DestinationActivity.class));
 	    }
 	});
     }

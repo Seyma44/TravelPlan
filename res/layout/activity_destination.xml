@@ -7,11 +7,11 @@
     tools:ignore="MergeRootFrame" >
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/Khaki"
         android:orientation="vertical"
         tools:ignore="UselessParent" >
@@ -51,16 +51,18 @@
             android:text="@string/destination_text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Button
-            android:id="@+id/open_map_button"
-            android:layout_width="fill_parent"
+        <EditText
+            android:id="@+id/name_city"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/button"
-            android:text="@string/button_open_maps_text"
-            android:textColor="@color/Wheat" />
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:ems="10"
+            android:hint="@string/name_city_hint"
+            android:text="13 rue jean giono 91000 evry" >
+
+            <requestFocus />
+        </EditText>
 
         <TextView
             android:id="@+id/location_show_label"
