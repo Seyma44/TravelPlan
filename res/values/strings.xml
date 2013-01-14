@@ -36,5 +36,14 @@
     <string name="title_activity_details">DetailsActivity</string>
     <string name="image_place">Image Place</string>
     <string name="title_activity_places_map">Places Localization</string>
+    
+        <string name="title_activity_map_fragment">Map</string>
+    <string name="title_activity_details">Details </string>
+    <string name="image_place">Image Place</string>
+    <string name="title_activity_download">Download Route</string>
+    <string name="write_name_project"> Write the name of project to download</string>
+    <string name="hint_name_project">nameproject-20130113</string>
+    <string name="name_city_hint">City Name</string>
+    <string name="button_download">Download</string>
 
 </resources>

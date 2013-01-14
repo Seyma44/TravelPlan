@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Khaki"
+    tools:context=".DownloadActivity"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/write_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:text="@string/write_name_project"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/get_project_to_download"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:ems="10"
+        android:hint="@string/hint_name_project"
+        android:inputType="text"
+         >
+
+        <requestFocus />
+    </EditText>
+            <Button
+            android:id="@+id/button_download"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button"
+            android:text="@string/button_download"
+            android:onClick="downloadProject"
+            android:textColor="@color/Wheat" />
+
+</LinearLayout>
