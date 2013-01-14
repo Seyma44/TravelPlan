@@ -47,5 +47,10 @@
     <string name="button_download">Download</string>
     <string name="open_map_button">Create New</string>
     <string name="open_dl_button">Download Travel</string>
+    <string name="dl_dialog_msg">Your travel has been correctly downloaded. Hit return to download another travel.</string>
+    <string name="dl_dialog_button1">Open Travel</string>
+    <string name="dl_dialog_button2">Main Menu</string>
+    <string name="menu_upload">Upload Travel</string>
+    <string name="menu_facebook">Share on Facebook</string>
 
 </resources>

@@ -121,11 +121,16 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	if (currentItinerary != null) {
 	    currentItinerary.remove();
 	}
-	Log.i("itemId", itemId + "");
-	itineraryIndex += (itemId == R.id.menu_prev_day) ? (-1) : 1;
-	Log.i("itiIndex", itineraryIndex + "");
-	setTitle(getResources().getString(R.string.title_activity_map) + " " + (itineraryIndex + 1));
-	displayItineraries();
+	if (itemId == R.id.menu_upload) {
+	    // TODO upload travel on server
+	} else if (itemId == R.id.menu_facebook) {
+	    // TODO share on facebook
+	} else {
+	    itineraryIndex += (itemId == R.id.menu_prev_day) ? (-1) : 1;
+	    setTitle(getResources().getString(R.string.title_activity_map) + " " + (itineraryIndex + 1));
+	    displayItineraries();
+	}
+
 	return super.onOptionsItemSelected(item);
     }
 
