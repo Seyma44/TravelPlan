@@ -2,6 +2,8 @@ package com.dabdm.travelplan.places;
 
 import java.io.Serializable;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Represent a place from the Google Places API
  * TODO complete it with the missing attributes
@@ -84,5 +86,8 @@ public class Place implements Serializable {
     }
     public void setTypes(String[] types) {
         this.types = types;
+    }
+    public LatLng getCoordinates() {
+	return null;
     }
 }

@@ -22,6 +22,10 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -49,7 +53,7 @@ import com.google.gson.GsonBuilder;
  * Activity showing the map with the calculated itinerary
  * TODO Calculations should be done in another Class
  */
-public class MapActivity extends FragmentActivity {
+public class MapActivity extends FragmentActivity implements LocationListener {
 
     public static final String SHARED_PREF_FILE_NAME  = "prefFile";
     public static final String SHARED_PREF_ROUTES_KEY = "polyline";
@@ -62,6 +66,8 @@ public class MapActivity extends FragmentActivity {
     private MenuItem	 menuItem0     = null;
     private MenuItem	 menuItem1     = null;
     private String fileName;
+    private Marker localisationMarker = null;
+    //BitmapDescriptor iconLocation = BitmapDescriptorFactory.fromResource(R.drawable.blue_dot);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +81,7 @@ public class MapActivity extends FragmentActivity {
 	fileName = extras.getString("travelFileName");
 	
 	// Get the travel from the file
-	travel = StorageHelper.travelDeserialize(getFilesDir(), fileName);
+	travel = StorageHelper.getTravelObject(getFilesDir(), fileName);
 	
 	// Display the itinerary (if there is more than one place per day
 	if(Math.ceil(((double)travel.getPlaces().size())/travel.getDuration()) > 1) {
@@ -83,6 +89,8 @@ public class MapActivity extends FragmentActivity {
 	}
 	// Display a marker for each Place
 	addTravelMarkers();
+		
+	initLocation();
 	
 	// Sets the map type to be "hybrid"
 	mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
@@ -119,9 +127,9 @@ public class MapActivity extends FragmentActivity {
 	}
 	// Do not show the next button if you are showing the last day
 	if(itineraryIndex == (travel.getDuration() - 1)) {
-	    menu.getItem(travel.getDuration() - 1).setEnabled(false).setVisible(false);
+	    menu.getItem(1).setEnabled(false).setVisible(false);
 	} else {
-	    menu.getItem(travel.getDuration() - 1).setEnabled(true).setVisible(true);
+	    menu.getItem(1).setEnabled(true).setVisible(true);
 	}
 	
 	return super.onPrepareOptionsMenu(menu);
@@ -145,6 +153,51 @@ public class MapActivity extends FragmentActivity {
     }
     
     /**
+     * Initialize Location manager
+     */
+    private void initLocation() {
+	// Enabling MyLocation Layer of Google Map
+        mMap.setMyLocationEnabled(true);
+ 
+        // Getting LocationManager object from System Service LOCATION_SERVICE
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        // Creating a criteria object to retrieve provider
+        Criteria criteria = new Criteria();
+        // Getting the name of the best provider
+        String provider = locationManager.getBestProvider(criteria, true);
+        // Getting Current Location
+        Location location = locationManager.getLastKnownLocation(provider);
+ 
+        if(location!=null){
+            onLocationChanged(location);
+        }
+ 
+        locationManager.requestLocationUpdates(provider, 20000, 0, this);
+    }
+    
+    @Override
+    public void onLocationChanged(Location location) {
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    /**
      * Used to add a Marker for each Place in the Travel
      */
     public void addTravelMarkers() {
@@ -161,10 +214,7 @@ public class MapActivity extends FragmentActivity {
      * @return the new Marker
      */
     public Marker addPlaceMarker(Place place) {
-	// TODO get real coordinate
-	double lat = 0.0;
-	double lng = 0.0;
-	LatLng latLng = new LatLng(lat, lng);
+	LatLng latLng = place.getCoordinates();
 	String title = place.getName();
 	String snippet = place.getSnippet();
 	// TODO get real icon from the icon url
@@ -257,7 +307,7 @@ public class MapActivity extends FragmentActivity {
 		k += placesNumber;
 	    }
 	    // Save the travel in the file
-	    StorageHelper.travelSerialize(getFilesDir(), fileName, travel);
+	    StorageHelper.saveTravelObject(getFilesDir(), fileName, travel);
 	    
 	    return true;
 	}

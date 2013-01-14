@@ -4,10 +4,36 @@
     <string name="app_name">TravelPlan</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="title_activity_itineraries">Itineraries</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_places_list">PlacesListActivity</string>
     <string name="title_activity_show_details">ShowDetails</string>
     <string name="menu_prev_day">Previous Day</string>
     <string name="menu_next_day">Next Day</string>
+    <string name="title_section3">Section 3</string>
+    <string name="title_section2">Download Project</string>
+    <string name="title_section1">New Project</string>
+    <string name="title_activity_destination">Destination</string>
+    <string name="name_project">Project Name</string>
+    <string name="name_project_hint">Insert name for your travel</string>
+    <string name="destination_text">Where do you want go?</string>
+    <string name="button_open_maps_text">Open map</string>
+    <string name="location_show">Location =</string>
+    <string name="duration_text">How long do you travel?</string>
+    <string name="next_step">Next</string>
+    <string name="select_diametre_label">Select your diametre to see</string>
+    <string name="button_open_picker_days">Pick days</string>
+    <string name="button_open_picker_radius">Pick radius</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_places">Select Places</string>
+    <string name="tab_places">Places</string>
+    <string name="tab_map">Map</string>
+    <string name="title_activity_table_fragment">Places</string>
+    <string name="column_name">Name</string>
+    <string name="column_radius">Radius</string>
+    <string name="column_add">Add</string>
+    <string name="title_activity_map_fragment">Map</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="image_place">Image Place</string>
 
 </resources>

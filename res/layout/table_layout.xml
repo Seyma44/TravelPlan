@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TableFragment">
+<TableLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/Khaki"
+        
+        >
+
+        <TableRow
+            android:id="@+id/tableheader"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFC573" >
+            
+            <TextView 
+                android:id="@+id/column_name"
+                android:text="@string/column_name"
+        		android:layout_width="120dp"        
+        		android:layout_column="0"
+        		android:layout_weight="1">
+        	</TextView>
+        	<TextView 
+        	    android:id="@+id/column_radius"
+        	    android:text="@string/column_radius"
+        		android:layout_width="20dp"
+        		android:layout_column="1"
+        		android:layout_weight="1">
+        	</TextView>
+        	<TextView 
+        	    android:id="@+id/column_add"
+        	    android:text="@string/column_add"
+        		android:layout_width="10dp"
+        		android:layout_column="2"
+        		android:layout_weight="1">
+        	</TextView>      
+        </TableRow>
+		<ScrollView android:layout_height="120dp"
+		    > 
+		    <TableLayout 
+		        android:id="@+id/score_table"
+      			android:layout_width="fill_parent"
+      			android:layout_height="wrap_content">               
+        		<TableRow
+            		android:id="@+id/tableRow2"
+            		android:layout_width="wrap_content"
+            		android:layout_height="wrap_content"
+            		android:text ="MEEEEEEEC" >
+            		
+        		</TableRow>
+
+        		<TableRow
+           			android:id="@+id/tableRow3"
+            		android:layout_width="wrap_content"
+            		android:layout_height="wrap_content" 
+            		android:text ="MEEEEEEEC">
+        		</TableRow>
+
+        		<TableRow
+            		android:id="@+id/tableRow4"
+            		android:layout_width="wrap_content"
+            		android:layout_height="wrap_content" 
+            		android:text ="MEEEEEEEC">
+        		</TableRow>
+        </TableLayout>
+        </ScrollView>
+    </TableLayout>
+</RelativeLayout>

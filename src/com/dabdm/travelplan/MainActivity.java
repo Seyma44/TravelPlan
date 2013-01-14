@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
+import com.dabdm.travelplan.map.MapActivity;
 import com.dabdm.travelplan.places.Place;
 import com.dabdm.travelplan.places.ShowDetails;
 
@@ -22,7 +23,7 @@ public class MainActivity extends Activity {
 		buttonNext.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// on click, start the Map activity
-				// startActivity(new Intent(MainActivity.this, MapActivity.class));
+				//startActivity(new Intent(MainActivity.this, MapActivity.class));
 				Intent intent = new Intent(MainActivity.this, ShowDetails.class);
 				intent.putExtra("placeReference",placeReference); 
 				startActivity(intent);
