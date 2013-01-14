@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.dabdm.travelplan.R;
+import com.dabdm.travelplan.StorageHelper;
 import com.dabdm.travelplan.Travel;
 import com.dabdm.travelplan.places.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -60,6 +61,7 @@ public class MapActivity extends FragmentActivity {
     private int itineraryIndex = 0;
     private MenuItem	 menuItem0     = null;
     private MenuItem	 menuItem1     = null;
+    private String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,10 +72,10 @@ public class MapActivity extends FragmentActivity {
 	// Get file name
 	Intent intent = getIntent();
 	Bundle extras = intent.getExtras();
-	String fileName = extras.getString("travelFileName");
+	fileName = extras.getString("travelFileName");
 	
-	// TODO get the travel from the file
-	travel = new Travel();
+	// Get the travel from the file
+	travel = StorageHelper.travelDeserialize(getFilesDir(), fileName);
 	
 	// Display the itinerary (if there is more than one place per day
 	if(Math.ceil(((double)travel.getPlaces().size())/travel.getDuration()) > 1) {
@@ -254,7 +256,8 @@ public class MapActivity extends FragmentActivity {
 		}
 		k += placesNumber;
 	    }
-	    // TODO save the travel in the file
+	    // Save the travel in the file
+	    StorageHelper.travelSerialize(getFilesDir(), fileName, travel);
 	    
 	    return true;
 	}

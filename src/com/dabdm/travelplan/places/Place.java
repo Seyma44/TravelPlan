@@ -1,10 +1,14 @@
 package com.dabdm.travelplan.places;
 
+import java.io.Serializable;
+
 /**
  * Represent a place from the Google Places API
  * TODO complete it with the missing attributes
  */
-public class Place {
+public class Place implements Serializable {
+    
+    private static final long serialVersionUID = 1354423837706732968L;
     
     private String formatted_address;
     private String vicinity;
