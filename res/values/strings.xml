@@ -52,5 +52,6 @@
     <string name="dl_dialog_button2">Main Menu</string>
     <string name="menu_upload">Upload Travel</string>
     <string name="menu_facebook">Share on Facebook</string>
+    <string name="upload_toast">Travel Uploaded</string>
 
 </resources>

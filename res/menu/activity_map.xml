@@ -1,17 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:id="@+id/menu_prev_day"
-        android:title="@string/menu_prev_day"/>
-    <item
-        android:id="@+id/menu_next_day"
-        android:title="@string/menu_next_day"/>
-    
+	    
     <item
         android:id="@+id/menu_upload"
         android:title="@string/menu_upload"/>
     <item
         android:id="@+id/menu_facebook"
         android:title="@string/menu_facebook"/>
+    
+    <item
+        android:id="@+id/menu_next_day"
+        android:title="@string/menu_next_day"/>
+    <item
+        android:id="@+id/menu_prev_day"
+        android:title="@string/menu_prev_day"/>
 
 </menu>

@@ -28,11 +28,8 @@ public class ItinerariesActivity extends ListActivity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_itineraries);
 	
-	//test();
+	test();
 	
-             
-	
-
 	Button button = (Button) findViewById(R.id.open_map_button);
 	button.setOnClickListener(new View.OnClickListener() {
 	    @Override
@@ -92,7 +89,7 @@ public class ItinerariesActivity extends ListActivity {
 	    t.setPlaceName("Australia");
 	    t.setRadius(20000);
 	    t.setTransportMode("walking");
-	    t.setTravelName("ADM_Australia" + System.currentTimeMillis());
+	    t.setTravelName("last" + System.currentTimeMillis());
 	    ArrayList<Place> places = new ArrayList<Place>();
 	    Place p1 = new Place();
 	    p1.setFormatted_address("529 Kent Street, Sydney NSW, Australia");

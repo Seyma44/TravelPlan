@@ -31,11 +31,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.dabdm.travelplan.FtpHelper;
 import com.dabdm.travelplan.R;
@@ -122,7 +124,11 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	    currentItinerary.remove();
 	}
 	if (itemId == R.id.menu_upload) {
-	    // TODO upload travel on server
+	 // Show progress bar
+	 MapActivity.this.setProgressBarIndeterminate(true);
+	 MapActivity.this.setProgressBarIndeterminateVisibility(true);
+	 new UploadTravel().execute("");
+	 displayItineraries();
 	} else if (itemId == R.id.menu_facebook) {
 	    // TODO share on facebook
 	} else {
@@ -133,20 +139,24 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 
 	return super.onOptionsItemSelected(item);
     }
+    
+    private void showToast() {
+	 Toast.makeText(getApplicationContext(), getString(R.string.upload_toast), Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 	// Do not show the previous button if you are showing the first day
 	if (itineraryIndex == 0) {
-	    menu.getItem(0).setEnabled(false).setVisible(false);
+	    menu.getItem(3).setEnabled(false).setVisible(false);
 	} else {
-	    menu.getItem(0).setEnabled(true).setVisible(true);
+	    menu.getItem(3).setEnabled(true).setVisible(true);
 	}
 	// Do not show the next button if you are showing the last day
 	if (itineraryIndex == (travel.getDuration() - 1)) {
-	    menu.getItem(1).setEnabled(false).setVisible(false);
+	    menu.getItem(2).setEnabled(false).setVisible(false);
 	} else {
-	    menu.getItem(1).setEnabled(true).setVisible(true);
+	    menu.getItem(2).setEnabled(true).setVisible(true);
 	}
 
 	return super.onPrepareOptionsMenu(menu);
@@ -412,13 +422,6 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	    // Save the travel in the file
 	    StorageHelper.saveTravelObject(getFilesDir(), fileName, travel);
 
-	    // Save the travel on server
-	    FtpHelper ftp = new FtpHelper();
-	    File file = new File(getFilesDir() + "/TRAVELPLAN" + fileName);
-	    ftp.connect();
-	    ftp.put(file);
-	    ftp.close();
-
 	    return true;
 	}
 
@@ -507,5 +510,35 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	    Log.i("response", json.toString());
 	    return directions.getRoutes().get(0).getOverview_polyline().getPoints();
 	}
+    }
+    
+    /**
+     * AsyncTask used to upload Travel
+     */
+    private class UploadTravel extends AsyncTask<String, Integer, Boolean> {
+
+	@Override
+	protected Boolean doInBackground(String... params) {
+	    boolean b = false;
+	 // Save the travel on server
+	    FtpHelper ftp = new FtpHelper();
+	    File file = new File(getFilesDir() + "/TRAVELPLAN" + fileName);
+	    ftp.connect();
+	    b = ftp.put(file);
+	    ftp.close();
+	    return b;
+	}
+
+	@Override
+	protected void onPostExecute(Boolean result) {
+	 // Hide progress bar
+	 MapActivity.this.setProgressBarIndeterminate(false);
+	 MapActivity.this.setProgressBarIndeterminateVisibility(false);
+	 if(result) {
+	     showToast();
+	 }
+	    super.onPostExecute(result);
+	}
+	
     }
 }

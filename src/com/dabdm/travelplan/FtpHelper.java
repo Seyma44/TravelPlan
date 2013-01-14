@@ -67,7 +67,8 @@ public class FtpHelper {
 	/*
 	 * This method put a file given in parameter into the ftp server.
 	 */
-	public void put(File file) {
+	public boolean put(File file) {
+	    boolean b = false;
 		BufferedInputStream buffIn = null;
 		try {
 			buffIn = new BufferedInputStream(new FileInputStream(
@@ -78,14 +79,17 @@ public class FtpHelper {
 
 		try {
 			ftpClient.storeFile(file.getName(), buffIn);
+			b = true;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
 			buffIn.close();
+			return b;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 	/*
