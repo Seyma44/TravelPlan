@@ -7,8 +7,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+/**
+ * Class used to store static methods that store and fetch objects in the internal
+ * memory of the device
+ */
 public class StorageHelper {
-	public static void travelSerialize(File filesDir, String itineraryName, Travel travel)
+	/**
+	 * Saves object of type Travel to the internal storage of the mobile
+	 * 
+	 * @param filesDir directory of files storage
+	 * @param itineraryName name of the itinerary to save
+	 * @param travel object to save
+	 */
+	public static void saveTravelObject(File filesDir, String itineraryName, Travel travel)
     {
         try
         {
@@ -25,7 +36,14 @@ public class StorageHelper {
         }
     }
     
-    public static Travel travelDeserialize(File filesDir, String itineraryName)
+	/**
+	 * Gets travel object from the internal storage
+	 * 
+	 * @param filesDir directory of files storage
+	 * @param itineraryName name of the itinerary to save
+	 * @return
+	 */
+    public static Travel getTravelObject(File filesDir, String itineraryName)
     {
         Travel travel = null;
         try
@@ -45,8 +63,5 @@ public class StorageHelper {
            c.printStackTrace();
         }
         return travel;
-      
     }
-
-    
 }
