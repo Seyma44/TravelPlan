@@ -26,6 +26,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+/**
+ * Activity displaying a place details (Name, rating, opening hours, phone number)
+ *
+ */
 public class ShowDetails extends Activity {
 
 	private String refPicture;
@@ -35,6 +39,7 @@ public class ShowDetails extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_show_details);
 		Intent intent = getIntent();
+		// Getting the place reference from the previous activity
 		Bundle extras = intent.getExtras();
 		ImageView imageView = (ImageView) findViewById(R.id.imageView1);
 		imageView.setVisibility(View.INVISIBLE);
@@ -47,6 +52,8 @@ public class ShowDetails extends Activity {
 		getMenuInflater().inflate(R.menu.activity_show_details, menu);
 		return true;
 	}
+	
+	//async task to get a place's details
 
 	private class LoadPlaces extends AsyncTask<String, Integer, Boolean> {
 		private String responseString = "";
@@ -78,9 +85,11 @@ public class ShowDetails extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
+				// getting details and convert to String
 				PlaceDetailsResponse details = gson.fromJson(json.toString(),
 						PlaceDetailsResponse.class);
+				
+				// display information
 				TextView tv = (TextView) findViewById(R.id.description_place);
 				TextView tv2 = (TextView) findViewById(R.id.info_place);
 				tv2.setGravity(Gravity.CENTER_VERTICAL
@@ -97,6 +106,7 @@ public class ShowDetails extends Activity {
 
 				tv.append(Html.fromHtml("<h2> " + details.result.getName()
 						+ "\n</h2>"));
+				// Display if we have any information about opening hours to avoid crash
 				if (details.result.getOpening_hours() != null) {
 					for (i = 0; i < details.result.getOpening_hours()
 							.getPeriods().length; i++) {
@@ -249,7 +259,7 @@ public class ShowDetails extends Activity {
 				tv.append(Html.fromHtml("\n\n<H3> Phone number: "
 						+ details.result.getInternational_phone_number()
 						+ "</H3>"));
-
+				//Display the picture only if we have a reference of this one, otherwise "no image" is shown
 				if (details.result.getPhotos() != null) {
 					refPicture = details.result.getPhotos()[0]
 							.getPhoto_reference();
@@ -260,7 +270,7 @@ public class ShowDetails extends Activity {
 				}
 			}
 		}
-
+		// Async task to get the picture from a reference
 		private class LoadImage extends AsyncTask<Object, Object, Boolean> {
 			private Bitmap image;
 
