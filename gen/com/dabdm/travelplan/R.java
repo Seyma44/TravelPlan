@@ -364,6 +364,7 @@ containing a value of this type.
         public static final int activity_show_details=0x7f0a000a;
     }
     public static final class string {
+        public static final int app_id=0x7f06003c;
         public static final int app_name=0x7f06000b;
         public static final int button_download=0x7f060031;
         public static final int button_open_maps_text=0x7f06001b;
@@ -419,7 +420,9 @@ containing a value of this type.
         public static final int dl_dialog_button1=0x7f060035;
         public static final int dl_dialog_button2=0x7f060036;
         public static final int dl_dialog_msg=0x7f060034;
+        public static final int dl_fail_toast=0x7f06003b;
         public static final int duration_text=0x7f06001d;
+        public static final int fail_upload_toast=0x7f06003a;
         public static final int hello_world=0x7f06000c;
         public static final int hint_name_project=0x7f06002f;
         public static final int image_place=0x7f06002b;
@@ -435,27 +438,27 @@ containing a value of this type.
         public static final int next_step=0x7f06001e;
         public static final int open_dl_button=0x7f060033;
         public static final int open_map_button=0x7f060032;
-        public static final int pref_default_display_name=0x7f06003f;
-        public static final int pref_description_social_recommendations=0x7f06003d;
+        public static final int pref_default_display_name=0x7f060042;
+        public static final int pref_description_social_recommendations=0x7f060040;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f060041;
+        public static final int pref_header_data_sync=0x7f060044;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f06003b;
+        public static final int pref_header_general=0x7f06003e;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f060044;
-        public static final int pref_ringtone_silent=0x7f060047;
-        public static final int pref_title_add_friends_to_messages=0x7f060040;
-        public static final int pref_title_display_name=0x7f06003e;
-        public static final int pref_title_new_message_notifications=0x7f060045;
-        public static final int pref_title_ringtone=0x7f060046;
-        public static final int pref_title_social_recommendations=0x7f06003c;
-        public static final int pref_title_sync_frequency=0x7f060042;
-        public static final int pref_title_system_sync_settings=0x7f060043;
-        public static final int pref_title_vibrate=0x7f060048;
+        public static final int pref_header_notifications=0x7f060047;
+        public static final int pref_ringtone_silent=0x7f06004a;
+        public static final int pref_title_add_friends_to_messages=0x7f060043;
+        public static final int pref_title_display_name=0x7f060041;
+        public static final int pref_title_new_message_notifications=0x7f060048;
+        public static final int pref_title_ringtone=0x7f060049;
+        public static final int pref_title_social_recommendations=0x7f06003f;
+        public static final int pref_title_sync_frequency=0x7f060045;
+        public static final int pref_title_system_sync_settings=0x7f060046;
+        public static final int pref_title_vibrate=0x7f06004b;
         public static final int select_diametre_label=0x7f06001f;
         public static final int tab_map=0x7f060024;
         public static final int tab_places=0x7f060023;
@@ -468,7 +471,7 @@ containing a value of this type.
         public static final int title_activity_places=0x7f060022;
         public static final int title_activity_places_list=0x7f060010;
         public static final int title_activity_places_map=0x7f06002c;
-        public static final int title_activity_settings=0x7f06003a;
+        public static final int title_activity_settings=0x7f06003d;
         public static final int title_activity_show_details=0x7f060011;
         public static final int title_activity_table_fragment=0x7f060025;
         public static final int title_section1=0x7f060016;
