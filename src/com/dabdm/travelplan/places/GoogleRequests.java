@@ -96,7 +96,7 @@ public class GoogleRequests {
 	public Bitmap getPicture(String photoRef) {
 		URL urlImage = null;
 		try {
-		urlImage = new URL(BASE_URL_PICTURE + "photoreference=" + photoRef + "&maxheight=150&maxwidth=150&sensor=true");
+		urlImage = new URL(BASE_URL_PICTURE + "photoreference=" + photoRef + "&maxheight=250&maxwidth=250&sensor=true");
 		} catch (MalformedURLException e) {
 		e.printStackTrace();
 		}
