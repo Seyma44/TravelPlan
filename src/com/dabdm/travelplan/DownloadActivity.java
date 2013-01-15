@@ -1,5 +1,6 @@
 package com.dabdm.travelplan;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
@@ -12,17 +13,28 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.dabdm.travelplan.map.MapActivity;
 
 public class DownloadActivity extends FragmentActivity {
     
     public static String fileName;
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+	// Inflate the menu; this adds items to the action bar if it is present.
+	getMenuInflater().inflate(R.menu.activity_download, menu);
+	return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +55,10 @@ public class DownloadActivity extends FragmentActivity {
 		fileName = fileNameTxt.getText().toString();
 		new DownloadFileTask().execute();
 	    }
-	});
+	});	
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-	// Inflate the menu; this adds items to the action bar if it is present.
-	getMenuInflater().inflate(R.menu.activity_download, menu);
-	return true;
-    }
+   
 
     /**
      * AsyncTask to send a new added friend to the server
@@ -81,13 +88,18 @@ public class DownloadActivity extends FragmentActivity {
 	    // TODO Auto-generated method stub
 	    super.onPostExecute(result);
 	    if (result) {
-		// Hide progress bar
-		DownloadActivity.this.setProgressBarIndeterminate(false);
-		DownloadActivity.this.setProgressBarIndeterminateVisibility(false);
 		final EditText fileNameTxt = (EditText) findViewById(R.id.get_project_to_download);
 		fileNameTxt.setText("");
-		new dlEndDialogFragment().show(getSupportFragmentManager(), ":-)");
+		showDialog();
+	    } else {
+		Log.i("fail", "fail");
+		File file = new File(getFilesDir(), "TRAVELPLAN" + fileName);
+		file.delete();
+		showToast();
 	    }
+	 // Hide progress bar
+	 		DownloadActivity.this.setProgressBarIndeterminate(false);
+	 		DownloadActivity.this.setProgressBarIndeterminateVisibility(false);
 	}
     }
     
@@ -121,6 +133,29 @@ public class DownloadActivity extends FragmentActivity {
 	    // Create the AlertDialog object and return it
 	    return builder.create();
 	}
+
+	@Override
+	public void show(FragmentManager manager, String tag) {
+	    try {
+		super.show(manager, tag);
+	    } catch(Exception e) {
+		
+	    }
+	    
+	}
+	
+	
+    }
+
+    public void showToast() {
+	Toast t = Toast.makeText(getApplicationContext(), getString(R.string.dl_fail_toast), Toast.LENGTH_LONG);
+	t.setGravity(Gravity.CENTER, 0, 0);
+	t.show();
+    }
+
+    public void showDialog() {
+	Log.i("dialog", "show");
+	new dlEndDialogFragment().show(getSupportFragmentManager(), ":-)");
     }
 
 }

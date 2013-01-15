@@ -36,7 +36,7 @@ public class ItinerariesActivity extends ListActivity {
 	    @Override
 	    public void onClick(View v) {
 		// TODO Auto-generated method stub
-		startActivity(new Intent(ItinerariesActivity.this.getApplicationContext(), DestinationActivity.class));
+		startActivity(new Intent(getApplicationContext(), DestinationActivity.class));
 	    }
 	});
 	Button dlButton = (Button) findViewById(R.id.open_dl_button);

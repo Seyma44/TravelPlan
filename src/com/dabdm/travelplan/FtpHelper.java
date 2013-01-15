@@ -80,7 +80,7 @@ public class FtpHelper {
 		try {
 			ftpClient.storeFile(file.getName(), buffIn);
 			b = true;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		try {

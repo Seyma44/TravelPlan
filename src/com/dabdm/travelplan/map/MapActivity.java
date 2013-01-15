@@ -3,6 +3,8 @@ package com.dabdm.travelplan.map;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -37,6 +39,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dabdm.travelplan.FtpHelper;
@@ -62,17 +65,22 @@ import com.google.gson.GsonBuilder;
  */
 public class MapActivity extends FragmentActivity implements LocationListener {
 
-    public static final String	  SHARED_PREF_FILE_NAME = "prefFile";
-    public static final String	  SHARED_PREF_FILE_KEY  = "fileName";
-    public static final String	  SHARED_PREF_INDEX_KEY = "itineraryIndex";
-    private int			 POLYLINE_WIDTH	= 5;
-    private int			 POLYLINE_COLOR	= Color.BLUE;
+    public static final String	  SHARED_PREF_FILE_NAME	 = "prefFile";
+    public static final String	  SHARED_PREF_FILE_KEY	  = "fileName";
+    public static final String	  SHARED_PREF_INDEX_KEY	 = "itineraryIndex";
+
+    private static final List<String>   PERMISSIONS		   = Arrays.asList("publish_actions");
+    private static final String	 PENDING_PUBLISH_KEY	   = "pendingPublishReauthorization";
+    private boolean		     pendingPublishReauthorization = false;
+
+    private int			 POLYLINE_WIDTH		= 5;
+    private int			 POLYLINE_COLOR		= Color.BLUE;
     private GoogleMap		   mMap;
     private Travel		      travel;
-    private Polyline		    currentItinerary      = null;
-    private int			 itineraryIndex	= 0;
-    private String		      fileName	      = "";
-    private ArrayList<Marker>	   displayedMarkers      = new ArrayList<Marker>();
+    private Polyline		    currentItinerary	      = null;
+    private int			 itineraryIndex		= 0;
+    private String		      fileName		      = "";
+    private ArrayList<Marker>	   displayedMarkers	      = new ArrayList<Marker>();
     private ArrayList<ArrayList<Place>> dayList;
 
     @Override
@@ -124,13 +132,13 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	    currentItinerary.remove();
 	}
 	if (itemId == R.id.menu_upload) {
-	 // Show progress bar
-	 MapActivity.this.setProgressBarIndeterminate(true);
-	 MapActivity.this.setProgressBarIndeterminateVisibility(true);
-	 new UploadTravel().execute("");
-	 displayItineraries();
+	    // Show progress bar
+	    MapActivity.this.setProgressBarIndeterminate(true);
+	    MapActivity.this.setProgressBarIndeterminateVisibility(true);
+	    new UploadTravel().execute("");
+	    displayItineraries();
 	} else if (itemId == R.id.menu_facebook) {
-	    // TODO share on facebook
+	 //   shareOnFacebook();
 	} else {
 	    itineraryIndex += (itemId == R.id.menu_prev_day) ? (-1) : 1;
 	    setTitle(getResources().getString(R.string.title_activity_map) + " " + (itineraryIndex + 1));
@@ -138,10 +146,6 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	}
 
 	return super.onOptionsItemSelected(item);
-    }
-    
-    private void showToast() {
-	 Toast.makeText(getApplicationContext(), getString(R.string.upload_toast), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -439,7 +443,7 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	private String loadItinerary(ArrayList<Place> places) {
 
 	    int placesLength = places.size();
-	    
+
 	    Log.i("place length", placesLength + "");
 
 	    String responseString = "";
@@ -454,7 +458,8 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	    List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 	    Log.i("place0", places.get(0).getName());
 	    pairs.add(new BasicNameValuePair("origin", places.get(0).getLat() + "," + places.get(0).getLng()));
-	    pairs.add(new BasicNameValuePair("destination", places.get(placesLength - 1).getLat() + "," + places.get(placesLength - 1).getLng()));
+	    pairs.add(new BasicNameValuePair("destination", places.get(placesLength - 1).getLat() + ","
+		    + places.get(placesLength - 1).getLng()));
 	    if (placesLength > 2) {
 		String waypoints = "optimize:true";
 		for (int i = 1; i < placesLength - 1; i++) {
@@ -464,7 +469,8 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	    }
 	    pairs.add(new BasicNameValuePair("units", "metric"));
 	    pairs.add(new BasicNameValuePair("sensor", "true"));
-	    pairs.add(new BasicNameValuePair("mode", travel.getTransportMode()));
+	    // pairs.add(new BasicNameValuePair("mode", travel.getTransportMode()));
+	    pairs.add(new BasicNameValuePair("mode", "walking"));
 	    Log.i("url", BASE_URL + "?" + URLEncodedUtils.format(pairs, "utf-8"));
 	    HttpGet request = new HttpGet(BASE_URL + "?" + URLEncodedUtils.format(pairs, "utf-8"));
 	    request.setHeader("Accept", "application/json");
@@ -514,7 +520,7 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	    return directions.getRoutes().get(0).getOverview_polyline().getPoints();
 	}
     }
-    
+
     /**
      * AsyncTask used to upload Travel
      */
@@ -523,7 +529,7 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	@Override
 	protected Boolean doInBackground(String... params) {
 	    boolean b = false;
-	 // Save the travel on server
+	    // Save the travel on server
 	    FtpHelper ftp = new FtpHelper();
 	    File file = new File(getFilesDir() + "/TRAVELPLAN" + fileName);
 	    ftp.connect();
@@ -534,14 +540,108 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 
 	@Override
 	protected void onPostExecute(Boolean result) {
-	 // Hide progress bar
-	 MapActivity.this.setProgressBarIndeterminate(false);
-	 MapActivity.this.setProgressBarIndeterminateVisibility(false);
-	 if(result) {
-	     showToast();
-	 }
 	    super.onPostExecute(result);
+	    // Hide progress bar
+	    MapActivity.this.setProgressBarIndeterminate(false);
+	    MapActivity.this.setProgressBarIndeterminateVisibility(false);
+	    showToast(result);
 	}
-	
+
     }
+
+    private void showToast(boolean b) {
+	String msg = (b) ? getString(R.string.upload_toast) : getString(R.string.fail_upload_toast);
+	Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
+
+   /* private void shareOnFacebook() {
+	publishStory(false, "Paris", "Tour Eiffel - Sacré Coeur - Louvres");
+    }
+
+    private void onClickLogin() {
+	Toast.makeText(getApplicationContext(), "LOGIN", Toast.LENGTH_SHORT).show();
+	Session.openActiveSession(this, true, new Session.StatusCallback() {
+
+	    // callback when session changes state
+	    @Override
+	    public void call(Session session, SessionState state, Exception exception) {
+		Toast.makeText(getApplicationContext(), "Callback " + session.getApplicationId() + ";" + session.isOpened(),
+			Toast.LENGTH_SHORT).show();
+		if (session.isOpened()) {
+
+		    Toast.makeText(getApplicationContext(), "OPEN", Toast.LENGTH_SHORT).show();
+		    // make request to the /me API
+		    Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+
+			// callback after Graph API response with user object
+			@Override
+			public void onCompleted(GraphUser user, Response response) {
+			    if (user != null) {
+				//TextView welcome = (TextView) findViewById(R.id.textView1);
+				Toast.makeText(getApplicationContext(), user.getName(), Toast.LENGTH_LONG).show();
+				//welcome.setText("Hello " + user.getName() + "!");
+			    }
+			}
+		    });
+		}
+	    }
+	});
+    }
+
+    private void publishStory(boolean url, String city, String places) {
+	Session session = Session.getActiveSession();
+	if (session == null) {
+	    onClickLogin();
+	}
+	if (session != null) {
+
+	    // Check for publish permissions
+	    List<String> permissions = session.getPermissions();
+	    if (!isSubsetOf(PERMISSIONS, permissions)) {
+		pendingPublishReauthorization = true;
+		Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(this, PERMISSIONS);
+		session.requestNewPublishPermissions(newPermissionsRequest);
+		return;
+	    }
+
+	    Bundle postParams = new Bundle();
+	    postParams.putString("name", "TravelPlan");
+	    postParams.putString("caption", "I just planned a trip to " + city + "!");
+	    postParams.putString("description", "I planned to discover these places: " + places + ".");
+	    if (url) {
+		postParams.putString("link", "https://developers.facebook.com/android");// link to the fake market
+	    }
+	   // postParams.putString("picture", "https://github.com/Skiing-Marmot/TravelPlan/blob/master/res/drawable/logo.png");
+
+	    Request.Callback callback = new Request.Callback() {
+		public void onCompleted(Response response) {
+		    JSONObject graphResponse = response.getGraphObject().getInnerJSONObject();
+		    String postId = null;
+		    try {
+			postId = graphResponse.getString("id");
+		    } catch (JSONException e) {
+			Log.i("[PUBLISH]", "JSON error " + e.getMessage());
+		    }
+		    FacebookRequestError error = response.getError();
+		    if (error != null) {
+			Toast.makeText(getApplicationContext(), error.getErrorMessage(), Toast.LENGTH_SHORT).show();
+		    } else {
+			Toast.makeText(getApplicationContext(), postId, Toast.LENGTH_LONG).show();
+		    }
+		}
+	    };
+
+	    Request request = new Request(session, "me/feed", postParams, HttpMethod.POST, callback);
+
+	    RequestAsyncTask task = new RequestAsyncTask(request);
+	    task.execute();
+	}
+    }
+
+    private boolean isSubsetOf(Collection<String> subset, Collection<String> superset) {
+	for (String string : subset) {
+	    if (!superset.contains(string)) { return false; }
+	}
+	return true;
+    }*/
 }
