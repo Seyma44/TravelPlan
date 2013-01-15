@@ -282,8 +282,7 @@ public class MapActivity extends FragmentActivity implements LocationListener {
     /**
      * Used to add a marker to point out a specific place
      * 
-     * @param place
-     *            the Place object to mark
+     * @param place : the Place object to mark
      * @return the new Marker
      */
     public Marker addPlaceMarker(Place place) {

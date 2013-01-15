@@ -22,12 +22,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+/**
+ * 
+ * Activity showing a list of the places given by the API GooglePlace
+ *
+ */
 public class PlacesActivity extends FragmentActivity {
-
-	/**
-	 * The serialization (saved instance state) Bundle key representing the
-	 * current dropdown position.
-	 */
 	private ListView listPlaces;
 	private ListView lvPlaces;
 	private Place[] listAllPlaces;
@@ -38,12 +38,16 @@ public class PlacesActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_places);
 		listPlaces = (ListView) findViewById(R.id.listplaces);
-
+		
+		//Get the travel from the DestinationActivity
 		travel = (Travel) getIntent().getSerializableExtra("travel");
+		
+		// Get the list of places (GooglePlace API)
 		new LoadPlaces().execute(travel.getLat(), travel.getLng(),
 				(double) travel.getRadius());
+		
+		
 		lvPlaces = (ListView) findViewById(R.id.listplaces);
-
 		lvPlaces.setSelector(R.drawable.listview);
 		lvPlaces.setLongClickable(true);
 
@@ -51,6 +55,8 @@ public class PlacesActivity extends FragmentActivity {
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				
+				// Save the travel object and start the map activity (shows the map...)
 				Intent i = new Intent(getBaseContext(), MapActivity.class);
 				travel.getItineraries().clear();
 				StorageHelper.saveTravelObject(getFilesDir(),
@@ -59,14 +65,18 @@ public class PlacesActivity extends FragmentActivity {
 				startActivity(i);
 			}
 		});
-
+		
+		// this method allow the user to select/deslect a place
 		lvPlaces.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				Place chosenPlace = listAllPlaces[arg2];
 				int i = 0;
+				// We compare the name of the touched place with the names
+				// that are already on the list, in order to know if we add it 
+				// or delete it (select/deselect). We can't user the contains method
+				// because the reference might change.
 				boolean found = false;
 				while (i < travel.getPlaces().size() && !found) {
 					found = travel.getPlaces().get(i).getName()
@@ -81,6 +91,8 @@ public class PlacesActivity extends FragmentActivity {
 				}
 			}
 		});
+		
+		// This method allows the user to see the details of a place when he "long-click" on it
 		lvPlaces.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
 			@Override
@@ -94,6 +106,9 @@ public class PlacesActivity extends FragmentActivity {
 		});
 	}
 
+	/**
+	 * This method save the travel object when onPause is called
+	 */
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -102,6 +117,9 @@ public class PlacesActivity extends FragmentActivity {
 
 	}
 
+	/**
+	 * This method gets the travel object when onResume is called
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -110,7 +128,7 @@ public class PlacesActivity extends FragmentActivity {
 	}
 
 	/**
-	 * AsyncTask used to loaded a list of interesting places
+	 * AsyncTask used to load a list of interesting places
 	 */
 	private class LoadPlaces extends AsyncTask<Double, Integer, Boolean> {
 		private String responseString = "";
@@ -120,7 +138,8 @@ public class PlacesActivity extends FragmentActivity {
 			GoogleRequests request = new GoogleRequests();
 			double x = params[0];
 			double y = params[1];
-			responseString = request.getPlaces(x, y, 5000);
+			// call of the method that contacts the https server...
+			responseString = request.getPlaces(x, y, (int)(double)params[2]);
 
 			return responseString == null ? false : true;
 		}
@@ -143,13 +162,6 @@ public class PlacesActivity extends FragmentActivity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				/*
-				 * PlacesList places = gson.fromJson(json.toString(),
-				 * PlacesList.class); Log.i("lol",responseString);
-				 * //Log.i("test", json.toString()); for(int i = 0; i <
-				 * places.getResults().length; i++) { Log.i("test",
-				 * places.getResults()[i].getName()); }
-				 */
 
 				PlacesList arListAllPlaces = gson.fromJson(json.toString(),
 						PlacesList.class);
@@ -160,6 +172,7 @@ public class PlacesActivity extends FragmentActivity {
 				for (int i = 0; i < listAllPlaces.length; i++) {
 					arrayListAllPlaces.add(listAllPlaces[i].getName());
 				}
+				// We need to use an adapter to fill in the view
 				ArrayAdapter<String> listAdapte = new ArrayAdapter<String>(
 						getApplicationContext(), R.layout.placesrow,
 						arrayListAllPlaces);

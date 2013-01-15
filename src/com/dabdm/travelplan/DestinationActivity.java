@@ -84,17 +84,4 @@ public class DestinationActivity extends FragmentActivity {
 		return true;
 	}
 
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_settings:
-			// app icon in action bar clicked; go home
-			Intent intent = new Intent(this, SettingsActivity.class);
-
-			startActivity(intent);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
 }
