@@ -85,6 +85,8 @@ public class DestinationActivity extends FragmentActivity implements
         		travel.setRadius(range);
         		travel.setDuration(daysNumber);
         		
+        		StorageHelper.saveTravelObject(getFilesDir(), travel.getTravelName(), travel);
+        		
         		Intent intent = new Intent();
         		intent.setClass(DestinationActivity.this.context, PlacesActivity.class);
         		intent.putExtra("travel", travel);

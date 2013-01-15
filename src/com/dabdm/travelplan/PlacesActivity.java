@@ -2,7 +2,9 @@ package com.dabdm.travelplan;
 
 
 import android.annotation.TargetApi;
+import com.dabdm.travelplan.StorageHelper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.dabdm.travelplan.R.color;
+import com.dabdm.travelplan.map.MapActivity;
 import com.dabdm.travelplan.places.GoogleRequests;
 import com.dabdm.travelplan.places.Place;
 import com.dabdm.travelplan.places.PlaceDetailsResponse;
@@ -42,6 +45,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -51,8 +55,6 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 public class PlacesActivity extends FragmentActivity { 
-
-		
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -93,8 +95,17 @@ public class PlacesActivity extends FragmentActivity {
 //			TextView item = (TextView)lvPlaces.getChildAt(2);
 //			item.setBackgroundColor(color.AliceBlue);
 	     
-	     
 	    
+	    Button button = (Button) findViewById(R.id.button_next_places);
+        button.setOnClickListener(new View.OnClickListener() {
+        	@Override
+            public void onClick(View v) {
+        		Intent i = new Intent(getBaseContext(), MapActivity.class);
+				i.putExtra("travelFileName",travel.getTravelName());
+				startActivity(i);
+        	}
+        });
+        
 	    lvPlaces.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
@@ -155,13 +166,22 @@ public class PlacesActivity extends FragmentActivity {
 //								getString(R.string.title_section3), }), this);
 	}
 
-	private void changeColor(int position)
-	{
-		Log.d("debug", String.valueOf(lvPlaces.getFirstVisiblePosition()));
-		TextView item = (TextView) lvPlaces.getChildAt(position+lvPlaces.getFirstVisiblePosition());
-		item.setBackgroundColor(color.AliceBlue);
+	@Override
+    protected void onPause() {
+		super.onPause();
+		StorageHelper.saveTravelObject(getFilesDir(), travel.getTravelName(), travel);
 		
 	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		travel = StorageHelper.getTravelObject(getFilesDir(), travel.getTravelName());
+		int i=0;
+		for (i=0;i<travel.getPlaces().size();i++) {
+			Log.i("madafaka", travel.getPlaces().get(i).getName());
+		}
+	}
+	
 	
 	/**
 	 * Backward-compatible version of {@link ActionBar#getThemedContext()} that
@@ -192,7 +212,7 @@ public class PlacesActivity extends FragmentActivity {
 //		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
 //				.getSelectedNavigationIndex());
 //	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
