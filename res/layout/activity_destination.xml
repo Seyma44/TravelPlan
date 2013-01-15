@@ -3,16 +3,18 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/Khaki"
     tools:context=".DestinationActivity"
     tools:ignore="MergeRootFrame" >
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/Khaki"
+		
         android:orientation="vertical"
         tools:ignore="UselessParent" >
 
@@ -23,10 +25,11 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="85dp"
             android:layout_marginRight="85dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:text="@string/name_project"
             android:textAlignment="center"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/Brown" />
 
         <EditText
             android:id="@+id/name_project"
@@ -49,6 +52,7 @@
             android:layout_marginTop="5dp"
             android:lines="1"
             android:text="@string/destination_text"
+            android:textColor="@color/Brown"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
@@ -59,7 +63,7 @@
             android:layout_marginRight="30dp"
             android:ems="10"
             android:hint="@string/name_city_hint"
-            android:text="13 rue jean giono 91000 evry" >
+            android:text="13 rue Jean Giono 91000 EVRY" >
 
             <requestFocus />
         </EditText>
@@ -71,6 +75,7 @@
             android:layout_marginLeft="60dp"
             android:layout_marginTop="5dp"
             android:text="@string/location_show"
+            android:textColor="@color/Brown"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -80,19 +85,18 @@
             android:text="@string/select_diametre_label"
             android:layout_marginRight="50dp"
             android:layout_marginLeft="50dp"
+            android:textColor="@color/Brown"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Button
-            android:id="@+id/open_pick_radius"
-            android:layout_width="fill_parent"
+        <EditText
+            android:id="@+id/diametre_number"
+            android:layout_width="50dp"
+            android:gravity="center_vertical|center_horizontal"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/button"
-            android:text="@string/button_open_picker_radius"
-            android:onClick="pickDays"
-            android:textColor="@color/Wheat" />
+            android:layout_marginLeft="120dp"
+            android:lines="1"
+            android:ems="10"
+            android:inputType="number" />
 
         <TextView
             android:id="@+id/duration_text_label"
@@ -100,19 +104,19 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"
             android:layout_marginTop="5dp"
+            android:textColor="@color/Brown"
             android:text="@string/duration_text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-        <Button
-            android:id="@+id/open_pick_days"
-            android:layout_width="fill_parent"
+
+        <EditText
+            android:id="@+id/duration_number"
+            android:layout_width="50dp"
+            android:gravity="center_vertical|center_horizontal"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/button"
-            android:text="@string/button_open_picker_days"
-            android:onClick="pickDays"
-            android:textColor="@color/Wheat" />
+            android:layout_marginLeft="120dp"
+			
+            android:ems="10"
+            android:inputType="number" />
 
         <Button
             android:id="@+id/button_next"

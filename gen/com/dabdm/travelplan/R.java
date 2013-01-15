@@ -300,6 +300,8 @@ containing a value of this type.
         public static final int container=0x7f050004;
         public static final int description_place=0x7f050011;
         public static final int destination_label=0x7f050007;
+        public static final int diametre_number=0x7f05000b;
+        public static final int duration_number=0x7f05000d;
         public static final int duration_text_label=0x7f05000c;
         public static final int get_project_to_download=0x7f050013;
         public static final int imageView1=0x7f050010;
@@ -321,8 +323,6 @@ containing a value of this type.
         public static final int normal=0x7f050001;
         public static final int open_dl_button=0x7f050016;
         public static final int open_map_button=0x7f050015;
-        public static final int open_pick_days=0x7f05000d;
-        public static final int open_pick_radius=0x7f05000b;
         public static final int picker=0x7f05001a;
         public static final int satellite=0x7f050002;
         public static final int score_table=0x7f050023;

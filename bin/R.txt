@@ -178,6 +178,8 @@ int id column_radius 0x7f050021
 int id container 0x7f050004
 int id description_place 0x7f050011
 int id destination_label 0x7f050007
+int id diametre_number 0x7f05000b
+int id duration_number 0x7f05000d
 int id duration_text_label 0x7f05000c
 int id get_project_to_download 0x7f050013
 int id imageView1 0x7f050010
@@ -199,8 +201,6 @@ int id none 0x7f050000
 int id normal 0x7f050001
 int id open_dl_button 0x7f050016
 int id open_map_button 0x7f050015
-int id open_pick_days 0x7f05000d
-int id open_pick_radius 0x7f05000b
 int id picker 0x7f05001a
 int id satellite 0x7f050002
 int id score_table 0x7f050023

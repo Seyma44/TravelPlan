@@ -50,8 +50,6 @@ public class DestinationActivity extends FragmentActivity implements
 //		final ActionBar actionBar = getActionBar();
 //		actionBar.setDisplayShowTitleEnabled(false);
 //		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		createDaysPicker();
-		createRadiusPicker();
 //		
 //		
 		Button button = (Button) findViewById(R.id.button_next);
@@ -61,6 +59,8 @@ public class DestinationActivity extends FragmentActivity implements
         		EditText etTravelName = (EditText)findViewById(R.id.name_project);
         		EditText etCityAdress = (EditText)findViewById(R.id.name_city);
         		TextView lblCoord = (TextView)findViewById(R.id.location_show_label);
+        		EditText etRadius = (EditText)findViewById(R.id.diametre_number);
+        		EditText etNbDays = (EditText)findViewById(R.id.duration_number);
         		
         		List<Address> address = null;
         		
@@ -82,8 +82,8 @@ public class DestinationActivity extends FragmentActivity implements
         		travel.setTravelName(etTravelName.getText().toString());
         		travel.setLat(lat);
         		travel.setLng(lng);
-        		travel.setRadius(range);
-        		travel.setDuration(daysNumber);
+        		travel.setRadius(Integer.valueOf(etRadius.getText().toString()));
+        		travel.setDuration(Integer.valueOf(etNbDays.getText().toString()));
         		
         		StorageHelper.saveTravelObject(getFilesDir(), travel.getTravelName(), travel);
         		
@@ -152,101 +152,11 @@ public class DestinationActivity extends FragmentActivity implements
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
+
 	@Override
-	public boolean onNavigationItemSelected(int position, long id) {
-		// When the given dropdown item is selected, show its contents in the
-		// container view.
-		Fragment fragment = new DummySectionFragment();
-		Bundle args = new Bundle();
-		args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
-		fragment.setArguments(args);
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.container, fragment).commit();
-		return true;
-	  }
-	
-
-	
-
-	public int createDaysPicker(){
-		int value = 0;
-		final Context context = this;
-        LayoutInflater li = LayoutInflater.from(context);
-        View promptsView = li.inflate(R.layout.activity_picker, null);
-        AlertDialog.Builder renamedialog = new AlertDialog.Builder(context);
-        renamedialog.setTitle(R.string.duration_text);
-        renamedialog.setView(promptsView);
-     
-        
-        int minValue = 1;
-        int maxValue = 60;
-        int currentValue = 3;
-        final NumberPicker uiCapacity = (NumberPicker) promptsView.findViewById(R.id.picker);
-        uiCapacity.setMinValue(minValue);
-        uiCapacity.setMaxValue(maxValue);
-        uiCapacity.setValue(currentValue);
-        daysNumber = uiCapacity.getValue();
-        
-        renamedialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {}
-        });
-        renamedialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // Write your code here to invoke NO event
-                dialog.cancel();
-            }
-        });
-        final AlertDialog alertdialog = renamedialog.create();
-        Button button = (Button) findViewById(R.id.open_pick_days);
-        button.setOnClickListener(new View.OnClickListener() {@Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                alertdialog.show();
-            }
-        });
-		return value;
+	public boolean onNavigationItemSelected(int arg0, long arg1) {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
-	
-	public int createRadiusPicker(){
-		int value = 0;
-		final Context context = this;
-        LayoutInflater li = LayoutInflater.from(context);
-        View promptsView = li.inflate(R.layout.activity_picker, null);
-        AlertDialog.Builder renamedialog = new AlertDialog.Builder(context);
-        renamedialog.setTitle(R.string.select_diametre_label);
-        renamedialog.setView(promptsView);
-     
-        
-        int minValue = 1;
-        int maxValue = 2000;
-        int currentValue = 5;
-        final NumberPicker uiCapacity = (NumberPicker) promptsView.findViewById(R.id.picker);
-        uiCapacity.setMinValue(minValue);
-        uiCapacity.setMaxValue(maxValue);
-        uiCapacity.setValue(currentValue);
-        range = uiCapacity.getValue();
-        
-        renamedialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {}
-        });
-        renamedialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // Write your code here to invoke NO event
-                dialog.cancel();
-            }
-        });
-        final AlertDialog alertdialog = renamedialog.create();
-        Button button = (Button) findViewById(R.id.open_pick_radius);
-        button.setOnClickListener(new View.OnClickListener() {@Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                alertdialog.show();
-            }
-        });
-		return value;
-	}
-	
-	
 
 }
