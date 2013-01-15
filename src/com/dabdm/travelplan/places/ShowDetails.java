@@ -259,26 +259,27 @@ public class ShowDetails extends Activity {
 					imageView.setVisibility(View.VISIBLE);
 				}
 			}
-	}
-
-	private class LoadImage extends AsyncTask<Object, Object, Boolean> {
-		private Bitmap image;
-
-		@Override
-		protected Boolean doInBackground(Object... arg0) {
-			GoogleRequests request = new GoogleRequests();
-			ImageView imageView = (ImageView) findViewById(R.id.imageView1);
-			image = request.getPicture(refPicture);
-			return true;
 		}
 
-		@Override
-		protected void onPostExecute(Boolean bool) {
-			ImageView imgView = (ImageView) findViewById(R.id.imageView1);
-			imgView.setImageBitmap(image);
-			imgView.setVisibility(View.VISIBLE);
+		private class LoadImage extends AsyncTask<Object, Object, Boolean> {
+			private Bitmap image;
 
+			@Override
+			protected Boolean doInBackground(Object... arg0) {
+				GoogleRequests request = new GoogleRequests();
+				ImageView imageView = (ImageView) findViewById(R.id.imageView1);
+				image = request.getPicture(refPicture);
+				return true;
+			}
+
+			@Override
+			protected void onPostExecute(Boolean bool) {
+				ImageView imgView = (ImageView) findViewById(R.id.imageView1);
+				imgView.setImageBitmap(image);
+				imgView.setVisibility(View.VISIBLE);
+
+			}
 		}
 	}
-	
+
 }
