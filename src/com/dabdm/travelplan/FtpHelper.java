@@ -24,7 +24,12 @@ import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.commons.net.io.CopyStreamEvent;
 import org.apache.commons.net.io.CopyStreamListener;
 import org.apache.commons.net.util.TrustManagerUtils;
-
+/**
+ * 
+ * This class is a helper that provides functionalities to get and store a file 
+ * on the TravelPlan server
+ *
+ */
 public class FtpHelper {
 	private final static String serverAddress = "ftp.alionka.org";
 	private final static String userName = "adm@alionka.org";
@@ -32,7 +37,7 @@ public class FtpHelper {
 
 	private FTPClient ftpClient;
 
-	/*
+	/**
 	 *  This method connect the client to the ftp server
 	 */
 	public void connect() {
@@ -40,10 +45,8 @@ public class FtpHelper {
 		try {
 			ftpClient.connect(serverAddress);
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} // Using port no=21
 		catch (Exception e) {
@@ -52,19 +55,18 @@ public class FtpHelper {
 		try {
 			ftpClient.login(userName, password);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
 			ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// Only passive mode is allowed in android
 		ftpClient.enterLocalPassiveMode();
 
 	}
-	/*
+	/**
 	 * This method put a file given in parameter into the ftp server.
 	 */
 	public boolean put(File file) {
@@ -92,9 +94,11 @@ public class FtpHelper {
 		return false;
 	}
 	
-	/*
+	/**
 	 * This method get a file, which name is given in parameter, from the server.
 	 * Then it stores it in the outputstream given in parameter.
+	 * @param fileName : name of the file to get
+	 * @param out : OutputStream in wich the file will be stored
 	 */
 	public boolean get(String fileName, OutputStream out) {
 		InputStream inStream;
@@ -118,7 +122,7 @@ public class FtpHelper {
 		return false;
 	}
 	
-	/*
+	/**
 	 * This method close the connection between the client and the server
 	 */
 	public void close() {
