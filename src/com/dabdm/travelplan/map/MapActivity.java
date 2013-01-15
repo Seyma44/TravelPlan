@@ -439,6 +439,8 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	private String loadItinerary(ArrayList<Place> places) {
 
 	    int placesLength = places.size();
+	    
+	    Log.i("place length", placesLength + "");
 
 	    String responseString = "";
 	    HttpResponse response = null;
@@ -450,12 +452,13 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	    HttpClient client = new DefaultHttpClient();
 
 	    List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-	    pairs.add(new BasicNameValuePair("origin", places.get(0).getAddressForRequest()));
-	    pairs.add(new BasicNameValuePair("destination", places.get(placesLength - 1).getAddressForRequest()));
+	    Log.i("place0", places.get(0).getName());
+	    pairs.add(new BasicNameValuePair("origin", places.get(0).getLat() + "," + places.get(0).getLng()));
+	    pairs.add(new BasicNameValuePair("destination", places.get(placesLength - 1).getLat() + "," + places.get(placesLength - 1).getLng()));
 	    if (placesLength > 2) {
 		String waypoints = "optimize:true";
 		for (int i = 1; i < placesLength - 1; i++) {
-		    waypoints = waypoints.concat("|" + places.get(i).getAddressForRequest());
+		    waypoints = waypoints.concat("|" + places.get(i).getLat() + "," + places.get(i).getLng());
 		}
 		pairs.add(new BasicNameValuePair("waypoints", waypoints));
 	    }

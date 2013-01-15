@@ -2,6 +2,8 @@ package com.dabdm.travelplan.places;
 
 import java.io.Serializable;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -44,8 +46,17 @@ public class Place implements Serializable {
      * @return the address with the correct format
      */
     public String getAddressForRequest() {
+	Log.i("test", getFormatted_address());
 	String result = getFormatted_address().replaceAll(",\\s", ",");
 	return result.replaceAll("\\s", "+");
+    }
+    
+    public double getLat() {
+	return this.getGeometry().getLocation().getLat();
+    }
+    
+    public double getLng() {
+	return this.getGeometry().getLocation().getLng();
     }
     
     public String getFormatted_address() {
