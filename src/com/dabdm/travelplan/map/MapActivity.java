@@ -63,7 +63,7 @@ import com.google.gson.GsonBuilder;
 /**
  * Activity showing the map with the calculated itinerary
  */
-public class MapActivity extends FragmentActivity implements LocationListener {
+public class MapActivity extends FragmentActivity {
 
     public static final String	  SHARED_PREF_FILE_NAME	 = "prefFile";
     public static final String	  SHARED_PREF_FILE_KEY	  = "fileName";
@@ -184,7 +184,8 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	// Display a marker for each Place
 	// addTravelMarkers();
 
-	initLocation();
+	// Enabling MyLocation Layer of Google Map
+		mMap.setMyLocationEnabled(true);
 
 	// Sets the map type to be "hybrid"
 	mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
@@ -206,51 +207,6 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 
 	    }
 	}
-    }
-
-    /**
-     * Initialize Location manager
-     */
-    private void initLocation() {
-	// Enabling MyLocation Layer of Google Map
-	mMap.setMyLocationEnabled(true);
-
-	// Getting LocationManager object from System Service LOCATION_SERVICE
-	LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-	// Creating a criteria object to retrieve provider
-	Criteria criteria = new Criteria();
-	// Getting the name of the best provider
-	String provider = locationManager.getBestProvider(criteria, true);
-	// Getting Current Location
-	Location location = locationManager.getLastKnownLocation(provider);
-
-	if (location != null) {
-	    onLocationChanged(location);
-	}
-
-	locationManager.requestLocationUpdates(provider, 20000, 0, this);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-	// TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-	// TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-	// TODO Auto-generated method stub
-
     }
 
     /**
