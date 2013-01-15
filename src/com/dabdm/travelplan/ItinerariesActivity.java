@@ -28,9 +28,7 @@ public class ItinerariesActivity extends ListActivity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_itineraries);
 	
-	test();
-	
-             
+	//test();
 	
 
 	Button button = (Button) findViewById(R.id.open_map_button);

@@ -96,6 +96,7 @@ public class ShowDetails extends Activity {
 				tv2.append("\n");
 				
 				tv.append(Html.fromHtml("<h2> " + details.result.getName() + "\n</h2>"));
+				if (details.result.getOpening_hours() != null) {
 				for (i = 0; i < details.result.getOpening_hours().getPeriods().length; i++) {
 
 					if (details.result.getOpening_hours().getPeriods()[i].getOpen() != null) {
@@ -180,16 +181,20 @@ public class ShowDetails extends Activity {
 							break;
 						}
 
-					}
+					}}
 
 				}
 				tv.append("\n");
 				tv.append(Html.fromHtml("\n\n<H3> Phone number: "+ details.result.getInternational_phone_number()+ "</H3>"));
-
-				refPicture= details.result.getPhotos()[0].getPhoto_reference();
+				if (details.result.getPhotos() != null) {
+					refPicture = details.result.getPhotos()[0].getPhoto_reference();
+				}
+				else {
+					refPicture = null;
+				}
 			}
 			
-			new LoadImage().execute();
+			if (refPicture != null) new LoadImage().execute();
 			
 		}
 	}
