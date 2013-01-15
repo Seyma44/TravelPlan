@@ -14,7 +14,7 @@ public class Travel implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
-    private ArrayList<Place> places;
+    private ArrayList<Place> places = new ArrayList<Place>();
     private ArrayList<String> itineraries = new ArrayList<String>();
     private String travelName; // The name of the project
     private String placeName; // The place (city) you visit

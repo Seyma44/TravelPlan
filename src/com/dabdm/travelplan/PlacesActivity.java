@@ -12,8 +12,10 @@ import org.json.JSONObject;
 
 import com.dabdm.travelplan.R.color;
 import com.dabdm.travelplan.places.GoogleRequests;
+import com.dabdm.travelplan.places.Place;
 import com.dabdm.travelplan.places.PlaceDetailsResponse;
 import com.dabdm.travelplan.places.PlacesList;
+import com.dabdm.travelplan.places.ShowDetails;
 //import com.dabdm.travelplan.places.PlacesListActivity.LoadPlaces;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -60,6 +62,8 @@ public class PlacesActivity extends FragmentActivity {
 	private ListView listPlaces;
 	private ArrayAdapter<String> listAdapter ; 
 	private ListView lvPlaces;
+	private Place[] listAllPlaces;
+	private Travel travel;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,12 +82,12 @@ public class PlacesActivity extends FragmentActivity {
 	//    listAdapter = new ArrayAdapter<String>(this, R.layout.placesrow, planetList);
 	//    listPlaces.setAdapter(listAdapter);
 		
-	    Travel travel = (Travel)getIntent().getSerializableExtra("travel");
+	    travel = (Travel)getIntent().getSerializableExtra("travel");
 	    new LoadPlaces().execute(travel.getLat(), travel.getLng(), (double)travel.getRadius());
 	     lvPlaces = (ListView)findViewById(R.id.listplaces);
 	     
-	     lvPlaces.setSelector(R.drawable.listview);
-	    
+	    lvPlaces.setSelector(R.drawable.listview);
+	    lvPlaces.setLongClickable(true);
 	    // listPlaces.getChil
 	     
 //			TextView item = (TextView)lvPlaces.getChildAt(2);
@@ -103,9 +107,34 @@ public class PlacesActivity extends FragmentActivity {
 		    	Log.d("aaa2", String.valueOf(arg2));
 		    	Log.d("aaa3", String.valueOf(arg3));
 		    	//changeColor(arg2);
-		    	Integer a = lvPlaces.getCheckedItemCount();
-		    	
-		    	Log.d("aaa", a.toString());
+		    	//Integer a = lvPlaces.getCheckedItemCount();
+		    	Log.d("test", String.valueOf(listAllPlaces.length));
+		    	Log.d("test", listAllPlaces[arg2].getName());
+		    	Place chosenPlace = listAllPlaces[arg2];
+		    	if (travel.getPlaces().contains(chosenPlace)) {
+		    		travel.getPlaces().remove(chosenPlace);
+		    	}
+		    	else {
+		    		travel.getPlaces().add(chosenPlace);
+		    	}		    	
+		    	int i;
+		    	for (i=0;i<travel.getPlaces().size();i++) {
+		    		Log.d("test", travel.getPlaces().get(i).getName());
+		    	}
+		    	//Log.d("aaa", a.toString());
+			}
+		});
+	    lvPlaces.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				
+				Log.d("yeah", String.valueOf(arg2));
+				Intent i = new Intent(getBaseContext(), ShowDetails.class);
+				i.putExtra("placeReference",listAllPlaces[arg2].getReference());
+				startActivity(i);
+				return true;
 			}
 		});
 	    
@@ -261,14 +290,15 @@ public class PlacesActivity extends FragmentActivity {
 		    }
 		*/
 		
-		PlacesList details = gson.fromJson(json.toString(), PlacesList.class);
+		PlacesList arListAllPlaces = gson.fromJson(json.toString(), PlacesList.class);
+		listAllPlaces = arListAllPlaces.getResults();
 		
-		ArrayList<String> placesList = new ArrayList<String>();
+		ArrayList<String> arrayListAllPlaces = new ArrayList<String>();
 		
-		for(int i = 0; i < details.getResults().length; i++) {
-		    placesList.add(details.getResults()[i].getName());
+		for(int i = 0; i < listAllPlaces.length; i++) {
+			arrayListAllPlaces.add(listAllPlaces[i].getName());
 		}
-		ArrayAdapter<String> listAdapte = new ArrayAdapter<String>(getApplicationContext(), R.layout.placesrow, placesList);
+		ArrayAdapter<String> listAdapte = new ArrayAdapter<String>(getApplicationContext(), R.layout.placesrow,arrayListAllPlaces);
 	    listPlaces.setAdapter(listAdapte);
 	    }
 	}

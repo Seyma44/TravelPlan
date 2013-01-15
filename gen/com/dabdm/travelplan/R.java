@@ -289,48 +289,51 @@ containing a value of this type.
         public static final int logo=0x7f020009;
     }
     public static final class id {
-        public static final int Place=0x7f05001d;
-        public static final int PlaceImage=0x7f05001e;
-        public static final int button1=0x7f050017;
+        public static final int Place=0x7f05001e;
+        public static final int PlaceImage=0x7f05001f;
+        public static final int button1=0x7f050018;
         public static final int button_download=0x7f050014;
         public static final int button_next=0x7f05000e;
-        public static final int button_next_places=0x7f05001b;
-        public static final int column_add=0x7f050023;
-        public static final int column_name=0x7f050021;
-        public static final int column_radius=0x7f050022;
+        public static final int button_next_places=0x7f05001c;
+        public static final int column_add=0x7f050024;
+        public static final int column_name=0x7f050022;
+        public static final int column_radius=0x7f050023;
         public static final int container=0x7f050004;
         public static final int description_place=0x7f050011;
         public static final int destination_label=0x7f050007;
         public static final int duration_text_label=0x7f05000c;
         public static final int get_project_to_download=0x7f050013;
-        public static final int imageView1=0x7f05000f;
-        public static final int info_place=0x7f050010;
-        public static final int listplaces=0x7f05001a;
+        public static final int imageView1=0x7f050010;
+        public static final int info_place=0x7f05000f;
+        public static final int listplaces=0x7f05001b;
         public static final int location_show_label=0x7f050009;
-        public static final int map=0x7f050018;
-        public static final int mapPlaces=0x7f05001c;
-        public static final int menu_next_day=0x7f05002a;
-        public static final int menu_prev_day=0x7f050029;
-        public static final int menu_settings=0x7f050028;
+        public static final int map=0x7f050019;
+        public static final int mapPlaces=0x7f05001d;
+        public static final int menu_facebook=0x7f05002b;
+        public static final int menu_next_day=0x7f05002c;
+        public static final int menu_prev_day=0x7f05002d;
+        public static final int menu_settings=0x7f050029;
+        public static final int menu_upload=0x7f05002a;
         public static final int name_city=0x7f050008;
-        public static final int name_place=0x7f05001f;
+        public static final int name_place=0x7f050020;
         public static final int name_project=0x7f050006;
         public static final int name_project_label=0x7f050005;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
+        public static final int open_dl_button=0x7f050016;
         public static final int open_map_button=0x7f050015;
         public static final int open_pick_days=0x7f05000d;
         public static final int open_pick_radius=0x7f05000b;
-        public static final int picker=0x7f050019;
+        public static final int picker=0x7f05001a;
         public static final int satellite=0x7f050002;
-        public static final int score_table=0x7f050024;
+        public static final int score_table=0x7f050025;
         public static final int select_diametre_textview=0x7f05000a;
-        public static final int tableRow2=0x7f050025;
-        public static final int tableRow3=0x7f050026;
-        public static final int tableRow4=0x7f050027;
-        public static final int tableheader=0x7f050020;
+        public static final int tableRow2=0x7f050026;
+        public static final int tableRow3=0x7f050027;
+        public static final int tableRow4=0x7f050028;
+        public static final int tableheader=0x7f050021;
         public static final int terrain=0x7f050003;
-        public static final int textView1=0x7f050016;
+        public static final int textView1=0x7f050017;
         public static final int write_name_label=0x7f050012;
     }
     public static final class layout {
@@ -415,39 +418,46 @@ containing a value of this type.
          */
         public static final int common_google_play_services_update_title=0x7f060007;
         public static final int destination_text=0x7f06001a;
+        public static final int dl_dialog_button1=0x7f060035;
+        public static final int dl_dialog_button2=0x7f060036;
+        public static final int dl_dialog_msg=0x7f060034;
         public static final int duration_text=0x7f06001d;
         public static final int hello_world=0x7f06000c;
         public static final int hint_name_project=0x7f06002f;
         public static final int image_place=0x7f06002b;
         public static final int location_show=0x7f06001c;
+        public static final int menu_facebook=0x7f060038;
         public static final int menu_next_day=0x7f060013;
         public static final int menu_prev_day=0x7f060012;
         public static final int menu_settings=0x7f06000d;
+        public static final int menu_upload=0x7f060037;
         public static final int name_city_hint=0x7f060030;
         public static final int name_project=0x7f060018;
         public static final int name_project_hint=0x7f060019;
         public static final int next_step=0x7f06001e;
-        public static final int pref_default_display_name=0x7f060037;
-        public static final int pref_description_social_recommendations=0x7f060035;
+        public static final int open_dl_button=0x7f060033;
+        public static final int open_map_button=0x7f060032;
+        public static final int pref_default_display_name=0x7f06003f;
+        public static final int pref_description_social_recommendations=0x7f06003d;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f060039;
+        public static final int pref_header_data_sync=0x7f060041;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f060033;
+        public static final int pref_header_general=0x7f06003b;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f06003c;
-        public static final int pref_ringtone_silent=0x7f06003f;
-        public static final int pref_title_add_friends_to_messages=0x7f060038;
-        public static final int pref_title_display_name=0x7f060036;
-        public static final int pref_title_new_message_notifications=0x7f06003d;
-        public static final int pref_title_ringtone=0x7f06003e;
-        public static final int pref_title_social_recommendations=0x7f060034;
-        public static final int pref_title_sync_frequency=0x7f06003a;
-        public static final int pref_title_system_sync_settings=0x7f06003b;
-        public static final int pref_title_vibrate=0x7f060040;
+        public static final int pref_header_notifications=0x7f060044;
+        public static final int pref_ringtone_silent=0x7f060047;
+        public static final int pref_title_add_friends_to_messages=0x7f060040;
+        public static final int pref_title_display_name=0x7f06003e;
+        public static final int pref_title_new_message_notifications=0x7f060045;
+        public static final int pref_title_ringtone=0x7f060046;
+        public static final int pref_title_social_recommendations=0x7f06003c;
+        public static final int pref_title_sync_frequency=0x7f060042;
+        public static final int pref_title_system_sync_settings=0x7f060043;
+        public static final int pref_title_vibrate=0x7f060048;
         public static final int select_diametre_label=0x7f06001f;
         public static final int tab_map=0x7f060024;
         public static final int tab_places=0x7f060023;
@@ -460,12 +470,13 @@ containing a value of this type.
         public static final int title_activity_places=0x7f060022;
         public static final int title_activity_places_list=0x7f060010;
         public static final int title_activity_places_map=0x7f06002c;
-        public static final int title_activity_settings=0x7f060032;
+        public static final int title_activity_settings=0x7f06003a;
         public static final int title_activity_show_details=0x7f060011;
         public static final int title_activity_table_fragment=0x7f060025;
         public static final int title_section1=0x7f060016;
         public static final int title_section2=0x7f060015;
         public static final int title_section3=0x7f060014;
+        public static final int upload_toast=0x7f060039;
         public static final int write_name_project=0x7f06002e;
     }
     public static final class style {
