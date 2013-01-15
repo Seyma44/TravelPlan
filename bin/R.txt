@@ -167,6 +167,7 @@ int drawable ic_action_overflow 0x7f020006
 int drawable ic_launcher 0x7f020007
 int drawable listview 0x7f020008
 int drawable logo 0x7f020009
+int drawable no_image 0x7f02000a
 int id button1 0x7f050018
 int id button_download 0x7f050014
 int id button_next 0x7f05000e
