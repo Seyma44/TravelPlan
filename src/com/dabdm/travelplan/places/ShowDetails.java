@@ -27,13 +27,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ShowDetails extends Activity {
-
+	
 	private String refPicture;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_details);
+		setContentView(R.layout.activity_show_details);
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
 		ImageView imageView = (ImageView) findViewById(R.id.imageView1);
@@ -44,11 +44,11 @@ public class ShowDetails extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_details, menu);
+		getMenuInflater().inflate(R.menu.activity_show_details, menu);
 		return true;
 	}
 
-	private class LoadPlaces extends AsyncTask<String, Integer, Boolean> {
+	private class LoadPlaces extends AsyncTask<String, Integer, Boolean> { 
 		private String responseString = "";
 
 		@Override
@@ -56,7 +56,8 @@ public class ShowDetails extends Activity {
 			String ref = params[0];
 			GoogleRequests request = new GoogleRequests();
 
-			responseString = request.getPlaceDetails(ref);
+			responseString = request
+					.getPlaceDetails(ref);
 			return responseString == null ? false : true;
 		}
 
@@ -83,177 +84,113 @@ public class ShowDetails extends Activity {
 						PlaceDetailsResponse.class);
 				TextView tv = (TextView) findViewById(R.id.description_place);
 				TextView tv2 = (TextView) findViewById(R.id.info_place);
-				tv2.setGravity(Gravity.CENTER_VERTICAL
-						| Gravity.CENTER_HORIZONTAL);
+				tv2.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 				tv.setMovementMethod(new ScrollingMovementMethod());
 				tv.setText("\n");
 				tv2.append("\n	");
 				tv2.setTextSize(35);
-				tv2.append(details.result.getRating() + " / 5 ");
+				tv2.append(details.result.getRating()+  " / 5 ");
 				tv2.append("  ");
 				int i = 0;
-
+				
 				tv2.append("\n");
+				
+				tv.append(Html.fromHtml("<h2> " + details.result.getName() + "\n</h2>"));
+				for (i = 0; i < details.result.getOpening_hours().getPeriods().length; i++) {
 
-				tv.append(Html.fromHtml("<h2> " + details.result.getName()
-						+ "\n</h2>"));
-				if (details.result.getOpening_hours() != null) {
-					for (i = 0; i < details.result.getOpening_hours()
-							.getPeriods().length; i++) {
+					if (details.result.getOpening_hours().getPeriods()[i].getOpen() != null) {
+						switch (details.result.getOpening_hours().getPeriods()[i].getOpen().getDay()) {
 
-						if (details.result.getOpening_hours().getPeriods()[i]
-								.getOpen() != null) {
-							switch (details.result.getOpening_hours()
-									.getPeriods()[i].getOpen().getDay()) {
-
-							case 1:
-								tv.append(Html.fromHtml("<h5> MONDAY     "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(2, 4)
-										+ "  "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(2, 4)
-										+ "</h5>\n\n"));
-								break;
-							case 2:
-								tv.append(Html.fromHtml("<h5> TUESDAY     "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(2, 4)
-										+ " "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(2, 4)
-										+ "</h5>\n\n"));
-								break;
-							case 3:
-								tv.append(Html.fromHtml("<h5> WEDNESDAY "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(2, 4)
-										+ " "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(2, 4)
-										+ "</h5>\n\n"));
-								break;
-							case 4:
-								tv.append(Html.fromHtml("<h5> THURSDAY     "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(2, 4)
-										+ " "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(2, 4)
-										+ "</h5>\n\n"));
-								break;
-							case 5:
-								tv.append(Html.fromHtml("<h5> FRIDAY     "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(2, 4)
-										+ " "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(2, 4)
-										+ "</h5>\n\n"));
-								break;
-							case 6:
-								tv.append(Html.fromHtml("<h5> SATURDAY     "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(2, 4)
-										+ " "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(2, 4)
-										+ "</h5>\n\n"));
-								break;
-							case 7:
-								tv.append(Html.fromHtml("<h5> SUNDAY     "
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getOpen()
-												.getTime().substring(2, 4)
-										+ " Close:"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(0, 2)
-										+ ":"
-										+ details.result.getOpening_hours()
-												.getPeriods()[i].getClose()
-												.getTime().substring(2, 4)
-										+ "</h5>\n\n"));
-								break;
-							}
+						case 1:
+							tv.append(Html.fromHtml("<h5> MONDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+									.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + "  " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
+							break;
+						case 2:
+							tv.append(Html.fromHtml("<h5> TUESDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+									.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
+							break;
+						case 3:
+							tv.append(Html.fromHtml("<h5> WEDNESDAY "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+									.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
+							break;
+						case 4:
+							tv.append(Html.fromHtml("<h5> THURSDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+									.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
+							break;
+						case 5:
+							tv.append(Html.fromHtml("<h5> FRIDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+									.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
+							break;
+						case 6:
+							tv.append(Html.fromHtml("<h5> SATURDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+									.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " " + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
+							break;
+						case 7:
+							tv.append(Html.fromHtml("<h5> SUNDAY     "+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+									.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getOpen().getTime()
+											.substring(2, 4) + " Close:" + details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(0, 2)
+									+ ":"
+									+ details.result.getOpening_hours().getPeriods()[i].getClose().getTime()
+											.substring(2, 4) + "</h5>\n\n"));
+							break;
 						}
+
 					}
 
 				}
 				tv.append("\n");
-				tv.append(Html.fromHtml("\n\n<H3> Phone number: "
-						+ details.result.getInternational_phone_number()
-						+ "</H3>"));
+				tv.append(Html.fromHtml("\n\n<H3> Phone number: "+ details.result.getInternational_phone_number()+ "</H3>"));
 
-				refPicture = details.result.getPhotos()[0].getPhoto_reference();
+				refPicture= details.result.getPhotos()[0].getPhoto_reference();
 			}
-
+			
 			new LoadImage().execute();
-
+			
 		}
 	}
 
@@ -272,7 +209,8 @@ public class ShowDetails extends Activity {
 			ImageView imgView = (ImageView) findViewById(R.id.imageView1);
 			imgView.setImageBitmap(image);
 			imgView.setVisibility(View.VISIBLE);
-
+			
+			
 		}
 	}
 }
