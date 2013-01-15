@@ -185,12 +185,19 @@ public class ShowDetails extends Activity {
 
 				}
 				tv.append("\n");
-				tv.append(Html.fromHtml("\n\n<H3> Phone number: "+ details.result.getInternational_phone_number()+ "</H3>"));
+				if(details.result.getInternational_phone_number()!=null){
+					tv.append(Html.fromHtml("\n\n<H3> Phone number: "+ details.result.getInternational_phone_number()+ "</H3>"));
+				}
+				else{
+					tv.append(Html.fromHtml("\n\n<H3> Phone number: Not given </H3>"));
+				}
 				if (details.result.getPhotos() != null) {
 					refPicture = details.result.getPhotos()[0].getPhoto_reference();
 				}
 				else {
 					refPicture = null;
+					ImageView imageView = (ImageView) findViewById(R.id.imageView1);
+					imageView.setVisibility(View.VISIBLE);
 				}
 			}
 			
@@ -205,6 +212,7 @@ public class ShowDetails extends Activity {
 		@Override
 		protected Boolean doInBackground(Object... arg0) {
 			GoogleRequests request = new GoogleRequests();
+			ImageView imageView = (ImageView) findViewById(R.id.imageView1);
 			image = request.getPicture(refPicture);
 			return true;
 		}

@@ -282,11 +282,11 @@ containing a value of this type.
         public static final int button_enabled=0x7f020002;
         public static final int button_focused=0x7f020003;
         public static final int button_pressed=0x7f020004;
-        public static final int darth_vader_icon=0x7f020005;
-        public static final int ic_action_overflow=0x7f020006;
-        public static final int ic_launcher=0x7f020007;
-        public static final int listview=0x7f020008;
-        public static final int logo=0x7f020009;
+        public static final int ic_action_overflow=0x7f020005;
+        public static final int ic_launcher=0x7f020006;
+        public static final int listview=0x7f020007;
+        public static final int logo=0x7f020008;
+        public static final int no_image=0x7f020009;
     }
     public static final class id {
         public static final int button1=0x7f050018;

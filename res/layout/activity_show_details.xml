@@ -27,7 +27,7 @@
                 android:contentDescription="@string/image_place"
                 android:maxHeight="15dp"
                 android:maxWidth="15dp"
-                android:src="@drawable/darth_vader_icon" />
+                android:src="@drawable/no_image" />
 
             <TextView
                 android:id="@+id/info_place"
