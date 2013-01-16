@@ -34,9 +34,9 @@
     <string name="column_add">Ajouter</string>
     <string name="title_activity_map_fragment">Carte</string>
     <string name="title_activity_details">DetailsActivity</string>
-    <string name="image_place">Emplacement de l'Image</string>
+    <string name="image_place">Emplacement de l\'Image</string>
     <string name="title_activity_places_map">Localisation des Lieux</string>
-        <string name="title_activity_map_fragment">Carte</string>
+    <string name="title_activity_map_fragment">Carte</string>
     <string name="title_activity_details">Détails </string>
     <string name="image_place">Emplacement de l\'Image</string>
     <string name="title_activity_download">Télécharger l\'Itinéraire</string>
