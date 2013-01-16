@@ -16,13 +16,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+/**
+ * 
+ * This activity allows the user to set up the configuration of its project : =>
+ * Choose the name of the project => Type the adress of the place he will stay
+ * => Type the radius he's interested in (the radius will determine how far the
+ * user is willing to go to visit places) => Type the trip duration
+ * 
+ */
 public class DestinationActivity extends FragmentActivity {
-	int value = 1;
-	/**
-	 * The serialization (saved instance state) Bundle key representing the
-	 * current dropdown position.
-	 */
 	private Context context = this;
 
 	@Override
@@ -33,10 +37,9 @@ public class DestinationActivity extends FragmentActivity {
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+
 				EditText etTravelName = (EditText) findViewById(R.id.name_project);
 				EditText etCityAdress = (EditText) findViewById(R.id.name_city);
-				TextView lblCoord = (TextView) findViewById(R.id.location_show_label);
 				EditText etRadius = (EditText) findViewById(R.id.diametre_number);
 				EditText etNbDays = (EditText) findViewById(R.id.duration_number);
 
@@ -44,7 +47,7 @@ public class DestinationActivity extends FragmentActivity {
 
 				Geocoder coder = new Geocoder(context);
 				try {
-					// get the coordinates of the adress
+					// get the coordinates of the address the user typed
 					String txtAdress = etCityAdress.getText().toString();
 					address = coder.getFromLocationName(txtAdress, 5);
 				} catch (IOException e) {
@@ -54,25 +57,40 @@ public class DestinationActivity extends FragmentActivity {
 				double lat = location.getLatitude();
 				double lng = location.getLongitude();
 
-				lblCoord.setText("Location : " + String.valueOf(lat) + ", "
-						+ String.valueOf(lng));
-
 				Travel travel = new Travel();
 				travel.setTravelName(etTravelName.getText().toString());
 				travel.setLat(lat);
 				travel.setLng(lng);
-				travel.setRadius(Integer.valueOf(etRadius.getText().toString()));
-				travel.setDuration(Integer.valueOf(etNbDays.getText()
-						.toString()));
+				String toastEmptyString = "You must fill in the radius and duration field";
+				if (etRadius.getText().toString().isEmpty()
+						|| etNbDays.getText().toString().isEmpty()) {
+					Toast toast = Toast.makeText(context, toastEmptyString,
+							Toast.LENGTH_SHORT);
+					toast.show();
+				} else {
+					int radius = Integer.valueOf(etRadius.getText().toString());
+					int duration = Integer.valueOf(etNbDays.getText()
+							.toString());
+					String toastInvalid = "Radius must be between 100 and 50000, Duration must be between 1 and 20";
+					if (radius < 100 || radius > 50000 || duration < 1
+							|| duration > 20) {
+						Toast toast = Toast.makeText(context, toastInvalid,
+								Toast.LENGTH_SHORT);
+						toast.show();
+					} else {
+						travel.setRadius(radius);
+						travel.setDuration(duration);
+						// Save the object travel
+						StorageHelper.saveTravelObject(getFilesDir(),
+								travel.getTravelName(), travel);
 
-				StorageHelper.saveTravelObject(getFilesDir(),
-						travel.getTravelName(), travel);
-
-				Intent intent = new Intent();
-				intent.setClass(DestinationActivity.this.context,
-						PlacesActivity.class);
-				intent.putExtra("travel", travel);
-				startActivity(intent);
+						Intent intent = new Intent();
+						intent.setClass(DestinationActivity.this.context,
+								PlacesActivity.class);
+						intent.putExtra("travel", travel);
+						startActivity(intent);
+					}
+				}
 			}
 		});
 	}

@@ -69,6 +69,7 @@ public class MapActivity extends FragmentActivity {
     public static final String	  SHARED_PREF_FILE_KEY	  = "fileName";
     public static final String	  SHARED_PREF_INDEX_KEY	 = "itineraryIndex";
 
+    
     private int			 POLYLINE_WIDTH		= 5;
     private int			 POLYLINE_COLOR		= Color.BLUE;
     private GoogleMap		   mMap;
@@ -510,4 +511,6 @@ public class MapActivity extends FragmentActivity {
     private void shareOnFacebook() {
 	Toast.makeText(getApplicationContext(), getString(R.string.coming_soon), Toast.LENGTH_LONG).show();
     }
+
+   
 }
