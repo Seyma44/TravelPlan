@@ -1,14 +1,25 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="@color/Khaki">
+    
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
          android:orientation="vertical"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
          android:paddingLeft="8dp"
          android:paddingRight="8dp"
-         android:background="@color/Khaki">
+         >
          
+   
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="380dp" >
+        android:layout_height="390dp" >
 
 	     <ListView android:id="@android:id/list"
 	               android:layout_width="match_parent"
@@ -28,33 +39,41 @@
 	              <ImageView
 	                  android:id="@+id/imageView1"
 	                  android:layout_width="wrap_content"
-	                  android:layout_height="wrap_content"
+	                  android:layout_height="match_parent"
 	                  android:src="@drawable/logo" />
 
 	          </LinearLayout>
 	     
      </LinearLayout>
      
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:gravity="center"
+         android:layout_marginBottom="5dp"
+          >
+
      <Button
-            android:id="@+id/open_map_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/button"
-            android:text="@string/open_map_button"
-            android:textColor="@color/Wheat" />
+         android:id="@+id/open_map_button"
+         android:layout_width="110dp"
+         android:layout_height="70dp"
+         android:layout_marginLeft="10dp"
+         android:layout_marginRight="10dp"
+         android:background="@drawable/button"
+         android:text="@string/open_map_button"
+         android:textColor="@color/Wheat" />
      
       <Button
             android:id="@+id/open_dl_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="15dp"
+            android:layout_width="110dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/button"
             android:text="@string/open_dl_button"
             android:textColor="@color/Wheat" />
+      </LinearLayout>
      
+ </LinearLayout>
+ </ScrollView>
  </LinearLayout>

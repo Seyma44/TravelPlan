@@ -36,8 +36,7 @@
     <string name="title_activity_details">DetailsActivity</string>
     <string name="image_place">Image Place</string>
     <string name="title_activity_places_map">Places Localization</string>
-    
-        <string name="title_activity_map_fragment">Map</string>
+    <string name="title_activity_map_fragment">Map</string>
     <string name="title_activity_details">Details </string>
     <string name="image_place">Image Place</string>
     <string name="title_activity_download">Download Route</string>
@@ -55,6 +54,6 @@
     <string name="upload_toast">Travel Uploaded</string>
     <string name="fail_upload_toast">Upload failed. Check your Internet connection.</string>
     <string name="dl_fail_toast">Download failed. Check file name and your internet connection.</string>
-    <string name="app_id">538771959474802</string>
+    <string name="coming_soon">Coming Soon</string>
 
 </resources>

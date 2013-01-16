@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TravelPlan</string>
+    <string name="hello_world">Bonjour monde!</string>
+    <string name="menu_settings">Paramètres</string>
+    <string name="title_activity_itineraries">TravelPlan</string>
+    <string name="title_activity_map">Itinéraire du jour</string>
+    <string name="title_activity_places_list">PlacesListActivity</string>
+    <string name="title_activity_show_details">ShowDetails</string>
+    <string name="menu_prev_day">Jour Précédent</string>
+    <string name="menu_next_day">Jour Suivant</string>
+    <string name="title_section3">Section 3</string>
+    <string name="title_section2">Télécharger Projet</string>
+    <string name="title_section1">Nouveau Projet</string>
+    <string name="title_activity_destination">Destination</string>
+    <string name="name_project">Nom du Projet</string>
+    <string name="name_project_hint">Insérer le nom du voyage</string>
+    <string name="destination_text">Où voulez-vous aller ?</string>
+    <string name="button_open_maps_text">Ouvrir la carte</string>
+    <string name="location_show">Lieu =</string>
+    <string name="duration_text">Combien de temps dure le voyage ?</string>
+    <string name="next_step">Suivant</string>
+    <string name="select_diametre_label">Sélectionner un rayon de recherche</string>
+    <string name="button_open_picker_days">Choisir un nombre de jours</string>
+    <string name="button_open_picker_radius">Choisir un rayon</string>
+    <string name="hello_world">Bonjour monde !</string>
+    <string name="title_activity_places">Sélectionner les Lieux</string>
+    <string name="tab_places">Lieux</string>
+    <string name="tab_map">Carte</string>
+    <string name="title_activity_table_fragment">Lieux</string>
+    <string name="column_name">Nom</string>
+    <string name="column_radius">Rayon</string>
+    <string name="column_add">Ajouter</string>
+    <string name="title_activity_map_fragment">Carte</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="image_place">Emplacement de l'Image</string>
+    <string name="title_activity_places_map">Localisation des Lieux</string>
+        <string name="title_activity_map_fragment">Carte</string>
+    <string name="title_activity_details">Détails </string>
+    <string name="image_place">Emplacement de l\'Image</string>
+    <string name="title_activity_download">Télécharger l\'Itinéraire</string>
+    <string name="write_name_project"> Ecrire le nom du projet à télécharger</string>
+    <string name="hint_name_project">nameproject-20130113</string>
+    <string name="name_city_hint">Nom de Ville</string>
+    <string name="button_download">Télécharger</string>
+    <string name="open_map_button">Créer Nouveau</string>
+    <string name="open_dl_button">Télécharger le Voyage</string>
+    <string name="dl_dialog_msg">Votre voyage a été téléchargé correctement. Appuyez sur Retour pour télécharger un autre voyage.</string>
+    <string name="dl_dialog_button1">Ouvrir Voyage</string>
+    <string name="dl_dialog_button2">Menu Principal</string>
+    <string name="menu_upload">Sauvegarder Voyage</string>
+    <string name="menu_facebook">Partager sur Facebook</string>
+    <string name="upload_toast">Voyage Sauvegardé</string>
+    <string name="fail_upload_toast">La sauvegarde a échoué. Vérifiez votre connexion à Internet.</string>
+    <string name="dl_fail_toast">Le téléchargement a échoué. Vérifiez le nom du fichier et votre connexion à Internet.</string>
+    <string name="app_id">538771959474802</string>
+
+</resources>

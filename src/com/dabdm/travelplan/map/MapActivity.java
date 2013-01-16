@@ -63,15 +63,11 @@ import com.google.gson.GsonBuilder;
 /**
  * Activity showing the map with the calculated itinerary
  */
-public class MapActivity extends FragmentActivity implements LocationListener {
+public class MapActivity extends FragmentActivity {
 
     public static final String	  SHARED_PREF_FILE_NAME	 = "prefFile";
     public static final String	  SHARED_PREF_FILE_KEY	  = "fileName";
     public static final String	  SHARED_PREF_INDEX_KEY	 = "itineraryIndex";
-
-    private static final List<String>   PERMISSIONS		   = Arrays.asList("publish_actions");
-    private static final String	 PENDING_PUBLISH_KEY	   = "pendingPublishReauthorization";
-    private boolean		     pendingPublishReauthorization = false;
 
     private int			 POLYLINE_WIDTH		= 5;
     private int			 POLYLINE_COLOR		= Color.BLUE;
@@ -138,7 +134,7 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	    new UploadTravel().execute("");
 	    displayItineraries();
 	} else if (itemId == R.id.menu_facebook) {
-	 //   shareOnFacebook();
+	    shareOnFacebook();
 	} else {
 	    itineraryIndex += (itemId == R.id.menu_prev_day) ? (-1) : 1;
 	    setTitle(getResources().getString(R.string.title_activity_map) + " " + (itineraryIndex + 1));
@@ -184,7 +180,8 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	// Display a marker for each Place
 	// addTravelMarkers();
 
-	initLocation();
+	// Enabling MyLocation Layer of Google Map
+		mMap.setMyLocationEnabled(true);
 
 	// Sets the map type to be "hybrid"
 	mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
@@ -208,50 +205,7 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	}
     }
 
-    /**
-     * Initialize Location manager
-     */
-    private void initLocation() {
-	// Enabling MyLocation Layer of Google Map
-	mMap.setMyLocationEnabled(true);
-
-	// Getting LocationManager object from System Service LOCATION_SERVICE
-	LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-	// Creating a criteria object to retrieve provider
-	Criteria criteria = new Criteria();
-	// Getting the name of the best provider
-	String provider = locationManager.getBestProvider(criteria, true);
-	// Getting Current Location
-	Location location = locationManager.getLastKnownLocation(provider);
-
-	if (location != null) {
-	    onLocationChanged(location);
-	}
-
-	locationManager.requestLocationUpdates(provider, 20000, 0, this);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-	// TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-	// TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-	// TODO Auto-generated method stub
-
-    }
+    
 
     /**
      * Used to add a Marker for each Place in the Travel
@@ -553,94 +507,7 @@ public class MapActivity extends FragmentActivity implements LocationListener {
 	Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
-   /* private void shareOnFacebook() {
-	publishStory(false, "Paris", "Tour Eiffel - Sacré Coeur - Louvres");
+    private void shareOnFacebook() {
+	Toast.makeText(getApplicationContext(), getString(R.string.coming_soon), Toast.LENGTH_LONG).show();
     }
-
-    private void onClickLogin() {
-	Toast.makeText(getApplicationContext(), "LOGIN", Toast.LENGTH_SHORT).show();
-	Session.openActiveSession(this, true, new Session.StatusCallback() {
-
-	    // callback when session changes state
-	    @Override
-	    public void call(Session session, SessionState state, Exception exception) {
-		Toast.makeText(getApplicationContext(), "Callback " + session.getApplicationId() + ";" + session.isOpened(),
-			Toast.LENGTH_SHORT).show();
-		if (session.isOpened()) {
-
-		    Toast.makeText(getApplicationContext(), "OPEN", Toast.LENGTH_SHORT).show();
-		    // make request to the /me API
-		    Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
-
-			// callback after Graph API response with user object
-			@Override
-			public void onCompleted(GraphUser user, Response response) {
-			    if (user != null) {
-				//TextView welcome = (TextView) findViewById(R.id.textView1);
-				Toast.makeText(getApplicationContext(), user.getName(), Toast.LENGTH_LONG).show();
-				//welcome.setText("Hello " + user.getName() + "!");
-			    }
-			}
-		    });
-		}
-	    }
-	});
-    }
-
-    private void publishStory(boolean url, String city, String places) {
-	Session session = Session.getActiveSession();
-	if (session == null) {
-	    onClickLogin();
-	}
-	if (session != null) {
-
-	    // Check for publish permissions
-	    List<String> permissions = session.getPermissions();
-	    if (!isSubsetOf(PERMISSIONS, permissions)) {
-		pendingPublishReauthorization = true;
-		Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(this, PERMISSIONS);
-		session.requestNewPublishPermissions(newPermissionsRequest);
-		return;
-	    }
-
-	    Bundle postParams = new Bundle();
-	    postParams.putString("name", "TravelPlan");
-	    postParams.putString("caption", "I just planned a trip to " + city + "!");
-	    postParams.putString("description", "I planned to discover these places: " + places + ".");
-	    if (url) {
-		postParams.putString("link", "https://developers.facebook.com/android");// link to the fake market
-	    }
-	   // postParams.putString("picture", "https://github.com/Skiing-Marmot/TravelPlan/blob/master/res/drawable/logo.png");
-
-	    Request.Callback callback = new Request.Callback() {
-		public void onCompleted(Response response) {
-		    JSONObject graphResponse = response.getGraphObject().getInnerJSONObject();
-		    String postId = null;
-		    try {
-			postId = graphResponse.getString("id");
-		    } catch (JSONException e) {
-			Log.i("[PUBLISH]", "JSON error " + e.getMessage());
-		    }
-		    FacebookRequestError error = response.getError();
-		    if (error != null) {
-			Toast.makeText(getApplicationContext(), error.getErrorMessage(), Toast.LENGTH_SHORT).show();
-		    } else {
-			Toast.makeText(getApplicationContext(), postId, Toast.LENGTH_LONG).show();
-		    }
-		}
-	    };
-
-	    Request request = new Request(session, "me/feed", postParams, HttpMethod.POST, callback);
-
-	    RequestAsyncTask task = new RequestAsyncTask(request);
-	    task.execute();
-	}
-    }
-
-    private boolean isSubsetOf(Collection<String> subset, Collection<String> superset) {
-	for (String string : subset) {
-	    if (!superset.contains(string)) { return false; }
-	}
-	return true;
-    }*/
 }
